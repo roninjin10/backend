@@ -10,8 +10,8 @@ const router = Router();
 router.get('/', (req, res) => res.json('Brandon Can\'t hang'));
 
 router.post('/user/signup', user.post.signup);
-router.post('/user/login', user.post.login);
-router.post('/user/logout', user.post.logout);
+router.post('/user/signin', user.post.login);
+router.post('/user/signout', user.post.logout);
 
 router.get('/post', byQuery);
 
