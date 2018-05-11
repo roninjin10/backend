@@ -8,22 +8,22 @@ Promise.promisifyAll(bcrypt);
 
 export const createUser = (newUser) => User.create(newUser);
 
-export const destroyUser = (displayName) => User.destroy({
-  where: {displayName}
+export const destroyUser = (username) => User.destroy({
+  where: {username}
 });
 
-export const fetchUser = (displayName) => User.findOne({
-  where: {displayName}
+export const fetchUser = (username) => User.findOne({
+  where: {username}
 })
 
 const verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
 
-export const verifyLogin = async (displayName, password) => {
+export const verifyLogin = async (username, password) => {
   
-  let user = await fetchUser(displayName);
+  let user = await fetchUser(username);
   
   if (!user) {
-    throw new Error('displayName does not exist');
+    throw new Error('username does not exist');
   }
 
   const isMatch = await verifyPassword(password, user.password);

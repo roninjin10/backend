@@ -41,7 +41,8 @@ controller.post.login = (req, res) => {
       return res.status(422).send(info);
     }
     
-
+    user = user.dataValues;
+    
     delete user.password;
     delete user.salt;
 
@@ -51,7 +52,7 @@ controller.post.login = (req, res) => {
         console.log('There was another error');
         return res.status(400).send('unable to log in user')
       }
-      
+      console.log('user in login', user);
       return res.json(user);
     })
   })(req, res)

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 
 export default (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
-    displayName: {
+    username: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false

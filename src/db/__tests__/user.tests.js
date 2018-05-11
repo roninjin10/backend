@@ -18,29 +18,29 @@ describe('Test createUser', () => {
   beforeEach(clearDatabase);
 
   test('Should create a new item in the database with valid input', (done) => {
-    const displayName = 'TEST_USER';
+    const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
 
     createUser({
-       displayName,
+       username,
        email,
        password
     })
     .then(() => User.findOne({
-      where: {displayName}
+      where: {username}
     }))
     .then((user) => expect(user.email).toBe('test@gmail.com'))
     .finally(done);
   })
 
   test('Should not create a user if email is not valid', (done) => {
-    const displayName = 'TEST_USER';
+    const username = 'TEST_USER';
     const email = 'not an email';
     const password = '123456789';
 
     createUser({
-      displayName,
+      username,
       email,
       password
     })
@@ -53,7 +53,7 @@ describe('Test createUser', () => {
 
   test('Usernames should be unique', (done) => {
     const newUser = {
-      displayName: 'TEST_USER',
+      username: 'TEST_USER',
       email: 'test@gmail.com',
       password: '123456789'
     };
@@ -68,17 +68,17 @@ describe('Test createUser', () => {
   })
 
   test('Passwords should be hashed', (done) => {
-    const displayName = 'TEST_USER';
+    const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
 
     createUser({
-       displayName,
+       username,
        email,
        password
     })
     .then(() => User.findOne({
-      where: {displayName}
+      where: {username}
     }))
     .then((user) => expect(user.password === '123456789').toBe(false))
     .finally(done);
@@ -89,16 +89,16 @@ describe('Test fetchUser', () => {
   beforeEach(clearDatabase);
 
   test('Should get user from database', (done) => {
-    const displayName = 'TEST_USER';
+    const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
 
     User.create({
-      displayName,
+      username,
       email,
       password
     })
-    .then(() => fetchUser(displayName))
+    .then(() => fetchUser(username))
     .then((user) => expect(user.email).toBe(email))
     .catch((err) => {
       throw new Error(err)
@@ -109,13 +109,13 @@ describe('Test fetchUser', () => {
 
 describe('Test verifyPassword', () => {
   
-  const displayName = 'TEST_USER2';
+  const username = 'TEST_USER2';
   const email = 'test2@gmail.com';
   const password = '1234567890';
   
   function beforeVerifyTest(done) {
     User.create({
-      displayName,
+      username,
       email,
       password
     })
@@ -129,14 +129,14 @@ describe('Test verifyPassword', () => {
   afterAll(clearDatabase);
 
   test('correct password should return a truthy value', (done) => {
-    fetchUser(displayName)
+    fetchUser(username)
     .then((user) => verifyPassword(password, user.password))
     .catch(() => expect(false).toBeTruthy)
     .finally(done);
   });
 
   test('incorrect password should return a falsy value', (done) => {
-    fetchUser(displayName)
+    fetchUser(username)
     .then((user) => verifyPassword('wrong password', user.password))
     .catch(() => expect(false).toBeTruthy)
     .finally(done);
@@ -144,13 +144,13 @@ describe('Test verifyPassword', () => {
 });
 
 describe('Test VerifyLogin', () => {
-  const displayName = 'TEST_USER2';
+  const username = 'TEST_USER2';
   const email = 'test2@gmail.com';
   const password = '1234567890';
   
   function beforeVerifyTest(done) {
     User.create({
-      displayName,
+      username,
       email,
       password
     })
@@ -164,9 +164,9 @@ describe('Test VerifyLogin', () => {
   afterAll(clearDatabase);
 
   test('correct login info should return the user', (done) => {
-    verifyLogin(displayName, password)
+    verifyLogin(username, password)
     .then(user => {
-      expect(user.displayName).toBe(displayName);
+      expect(user.username).toBe(username);
       expect(user.email).toBe(email);
       done();
     })
@@ -190,7 +190,7 @@ describe('Test VerifyLogin', () => {
   })
 
   test('incorrect password should throw an error', (done) => {
-    verifyLogin(displayName, 'wrongpassword')
+    verifyLogin(username, 'wrongpassword')
     .then(() => {
       expect(false).toBeTruthy;
       done();
