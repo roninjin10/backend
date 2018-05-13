@@ -4,7 +4,10 @@ const User = db.User;
 const { createUser, fetchUser, verifyPassword, verifyLogin, destroyUser } = User 
 
   
-afterAll(() => db.sequelize.close());
+afterAll(async (done) => {
+  await db.sequelize.close();
+  done();
+});
 
 describe('Test createUser', () => {
 

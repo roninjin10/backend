@@ -1,19 +1,24 @@
-import { newPost } from '../controller/post'
+import { db, newPost } from '../controller/post'
+
+afterAll(async (done) => {
+  await db.sequelize.close();
+  done();
+});
 
 const fakeQuestion = {
-  userid: 1,
+  UserId: 1,
   title: 'Title',
   body: 'This is the body',
   type: 'Question',
-  associatedQuestionId: null
+  PostId: null
 };
 
 const fakeAnswer = {
-  userid: 2,
+  UserId: 2,
   title: 'Title',
   body: 'this is the body of an answer',
   type: 'Answer',
-  associatedQuestionId: 1
+  PostId: 1
 };
 
 class Res {
@@ -37,7 +42,6 @@ describe('newPost function from controller/post.js', () => {
   const newAnswer = newPost('Answer');
 
   test('should create a newQuestion', async () => {
-    debugger;
     const req = {body: fakeQuestion};
     const res = new Res();
 
