@@ -1,4 +1,4 @@
-import { createUser } from '../db/util/user'
+import { User } from '../../db/models'
 
 import passport from '../middleware/localPassport'
 import log from '../utils/logger'
@@ -9,7 +9,7 @@ let controller = {
 };
 
 controller.post.signup = (req, res) => {
-  return createUser(req.body)
+  return User.createUser(req.body)
     .then(() => {
       req.login(req.body, (err) => {
         if (err) {
@@ -36,11 +36,11 @@ controller.post.login = (req, res) => {
   passport.authenticate('local', (err, user, info) => {
     
     if (err || !user) {
-      console.log('There was an error or no user')
       log.info('there was an error authenticating user', err)
       return res.status(422).send(info);
     }
     
+    user = user.dataValues;
 
     delete user.password;
     delete user.salt;
@@ -48,10 +48,8 @@ controller.post.login = (req, res) => {
     req.login(user, (err) => {
       if (err) {
         log.info('there was an error logging in user', err)
-        console.log('There was another error');
         return res.status(400).send('unable to log in user')
       }
-      
       return res.json(user);
     })
   })(req, res)

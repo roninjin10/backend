@@ -8,15 +8,15 @@
   },
   "author": "Vassilis Mastorostergios <vmasto@gmail.com>",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/server/index.js",
   "engines": {
     "node": "~8.9.4",
     "npm": ">=5.8.0"
   },
   "scripts": {
     "prestart": "npm run -s build",
-    "start": "node dist/index.js",
-    "dev": "nodemon src/index.js --exec \"node -r dotenv/config -r babel-register\"",
+    "start": "node dist/server/index.js",
+    "dev": "nodemon src/server/index.js --exec \"node -r dotenv/config -r babel-register\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest",

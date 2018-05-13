@@ -1,8 +1,12 @@
 import bcrypt from 'bcrypt';
+import Promise from 'bluebird'
+import Sequelize from 'sequelize'
+
+Promise.promisifyAll(bcrypt);
 
 export default (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    displayName: {
+  const User = sequelize.define('User', {
+    username: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false
@@ -23,11 +27,21 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: {
-          args: [8, 2000],
-          msg: 'Please enter a password with at least 8 characters'
+          args: [3, 2000],
+          msg: 'Please enter a password with at least 3 characters'
         }
       }
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    }
   }, {
     /*
      *  this hook is making sure we encrypt the password before storing in database
@@ -38,8 +52,48 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
+  
   User.associate = function(models) {
     User.hasMany(models.Post);
   };
+  
+  User.createUser = (newUser) => User.create(newUser);
+
+  User.destroyUser = (username) => User.destroy({
+    where: {username}
+  });
+
+  User.fetchUser = (username) => User.findOne({
+    where: {username}
+  })
+
+  User.verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
+
+  User.verifyLogin = async (username, password) => {
+    
+    let user = await User.fetchUser(username);
+    
+    if (!user) {
+      throw new Error('username does not exist');
+    }
+
+    const isMatch = await User.verifyPassword(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('password is incorrect');
+    }
+    
+    delete user.password;
+    return user;
+  }
+
+  User.queryUsers = (query) => User.findAll({
+    where: query,
+    include: [{all: true}]
+  });
+
+
+
+  
   return User;
 };

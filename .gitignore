@@ -1,6 +1,8 @@
 # https://github.com/github/gitignore/blob/master/Node.gitignore #
 ##################################################################
 
+src/db/config/config.json
+
 # Logs
 logs
 *.log

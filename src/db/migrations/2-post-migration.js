@@ -7,15 +7,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      postRefId: {
+      PostId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Posts',
           key: 'id'
         }
       },
-      userid: {
+      UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -44,11 +44,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       commentCount: {
