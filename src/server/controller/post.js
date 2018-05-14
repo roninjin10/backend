@@ -38,7 +38,7 @@ export const newPost  = (postType) => (req, res) => {
   .then(() => res.status(201).send('post successful'))
   .catch((err) => res.status(401).json({
       message: 'there was an error posting question',
-      err
+      er
   }));
 }
 
