@@ -13,19 +13,18 @@ describe('test functions to interact with post model', () => {
     const title = 'title';
     const body = 'body';
     const type = 1;
-    
+
     const post = {
       UserId,
       title,
       body,
-      PostTypeId: type
     };
 
     let posts = await Post.getPostsByQuery(post);
-
+    
     const lengthBefore = posts.length;
 
-    await Post.createNewPost(post);
+    await Post.createNewPost({...post, type});
 
     posts = await Post.getPostsByQuery(post);
 

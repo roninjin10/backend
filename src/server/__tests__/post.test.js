@@ -24,11 +24,13 @@ const fakeAnswer = {
 class Res {
   status(status) {
     this.status = status;
+    console.log('status sent:', status);
     return this;
   }
 
   send(message) {
     this.sentMessage = message;
+    console.log('new message', message);
     return this;
   }
 
@@ -55,7 +57,6 @@ describe('newPost function from controller/post.js', () => {
     const res = new Res();
 
     await newAnswer(req, res);
-
     expect(res.status).toBe(201);
   })
 })
