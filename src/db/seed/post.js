@@ -1,4 +1,3 @@
-'use strict';
 const postData = [
   {
     UserId: 1,
@@ -44,12 +43,4 @@ const postData = [
   }
 ];
 
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Posts', postData, {});
-  },
-
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Posts', null, {});
-  }
-};
+module.exports = postData;
