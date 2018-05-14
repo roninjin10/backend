@@ -55,6 +55,10 @@ export default (sequelize, DataTypes) => {
     upvoteCount: {
       defaultValue: 0,
       type: DataTypes.INTEGER
+    },
+    closedDate: {
+      allowNull: true,
+      type: DataTypes.DATE
     }
   });
 
@@ -72,6 +76,10 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   });
 
+  Post.getPost = (id) => Post.findOne({
+    where: {id}
+  })
+
   Post.getPostsByType = (type) => Post.findAll({
     where: {type}
   });
@@ -80,28 +88,69 @@ export default (sequelize, DataTypes) => {
     where: query
   });
 
-  Post.createNewPost = ({userid, title, body, type, associatedQuestionId}) => Post.create({
-    userid,
-    title,
-    body,
-    type,
-    associatedQuestionId: associatedQuestionId
-  });
+  Post.createNewPost = async ({userid, title, body, type, postId}) => {
+    await Post.create({
+      userid,
+      title,
+      body,
+      type,
+      PostId: postId
+    });
+
+    if (postId) {
+      await Post.incComment(postId);
+    }
+  }
+
+  Post.destroyPost = async (id) => {
+    let post;
+    try {
+      post = await Post.getPost(id);
+    } catch(err) {
+      throw new Error('post does not exist');
+    }
+    
+    await Post.destroy({
+      where: {id}
+    });
+    
+    const question = post.PostId;
+    if (question) {
+      await Post.decComment(id);
+    }
+  }
 
   Post.getPostById = (postId) => Post.findById(postId);
 
-  Post.incrementView = async (postId) => {
+  Post.incView = async (questionId) => {
     await Post.increment('viewCount', {
       where: {
-        PostId: postId
+        PostId: questionId
       }
     });
     await Post.increment('viewCount', {
       where: {
-        id: postId
+        id: questionId
       }
     });
-  }
+  };
+
+  const incField = (field) => (id) => Post.increment(field, {where: {id}});
+  const decField = (field) => (id) => Post.decrement(field, {where: {id}});
+  
+  Post.incVote = incField('upvoteCount');
+  Post.decVote = decField('upvoteCount');
+
+  Post.incComment = incField('commentCount');
+  Post.decComment = decField('commentCount');
+
+  Post.incFavorite = incField('favoriteCount');
+  Post.decFavorite = decField('favoriteCount');
+
+  Post.close = (id, isTopAnswer = false) => Post.update({
+    closedDate: DataTypes.fn('NOW'),
+    isTopAnswer
+  });
 
   return Post;
 

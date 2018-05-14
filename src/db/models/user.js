@@ -49,7 +49,7 @@ export default (sequelize, DataTypes) => {
     where: {username}
   });
 
-  User.fetchUser = (username) => User.findOne({
+  User.getUser = (username) => User.findOne({
     where: {username}
   })
 
@@ -57,7 +57,7 @@ export default (sequelize, DataTypes) => {
 
   User.verifyLogin = async (username, password) => {
     
-    let user = await User.fetchUser(username);
+    let user = await User.getUser(username);
     
     if (!user) {
       throw new Error('username does not exist');

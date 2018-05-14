@@ -1,7 +1,7 @@
 import db from '../models'
 
 const User = db.User;
-const { createUser, fetchUser, verifyPassword, verifyLogin, destroyUser } = User 
+const { createUser, getUser, verifyPassword, verifyLogin, destroyUser } = User 
 
   
 afterAll(async (done) => {
@@ -97,7 +97,7 @@ describe('Test createUser', () => {
   })
 })
 
-describe('Test fetchUser', () => {
+describe('Test getUser', () => {
 
   test('Should get user from database', (done) => {
     const username = 'TEST_USER';
@@ -109,7 +109,7 @@ describe('Test fetchUser', () => {
       email,
       password
     })
-    .then(() => fetchUser(username))
+    .then(() => getUser(username))
     .then((user) => {
       expect(user.email).toBe(email)
       done()
@@ -135,14 +135,14 @@ describe('Test verifyPassword', () => {
   })
 
   test('correct password should return a truthy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword(password, user.password))
     .catch(() => expect(false).toBeTruthy)
     .finally(done);
   });
 
   test('incorrect password should return a falsy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword('wrong password', user.password))
     .catch(() => expect(false).toBeTruthy)
     .finally(done);
