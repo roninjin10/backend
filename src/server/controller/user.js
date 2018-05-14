@@ -1,8 +1,8 @@
-import { User } from '../../db/models'
+import db from '../../db/models'
 
 import passport from '../middleware/localPassport'
 import log from '../utils/logger'
-
+const User = db.User
 
 let controller = {
   post: {},

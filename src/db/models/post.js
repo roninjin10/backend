@@ -28,40 +28,144 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    type: {
-      type: DataTypes.STRING,
-      defaultValue: 'comment'
+    PostTypeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    viewCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    answerCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    isTopAnswer: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN
+    },
+    commentCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    favoriteCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    upvoteCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    closedDate: {
+      allowNull: true,
+      type: DataTypes.DATE
     }
   });
-
+  
   Post.associate = (models) => {
     Post.belongsTo(models.User);
     Post.belongsTo(models.Post);
     Post.hasMany(models.Post);
+    Post.belongsTo(models.PostType);
+    Post.hasMany(models.Tag);
+    Post.hasMany(models.Vote);
+    Post.hasMany(models.View);
   };
 
   Post.getAllPosts = () => Post.findAll({
     include: [{all: true}]
   });
 
-  Post.getPostsByType = (type) => Post.findAll({
-    where: {type}
+  Post.getPost = (id) => Post.findOne({
+    where: {id}
   })
+
+// TODO make this be able to take in string or number for type
+  Post.getPostsByType = (type) => Post.findAll({
+    where: {PostTypeId: type}
+  });
 
   Post.getPostsByQuery = (query) => Post.findAll({
     where: query
   });
 
-  Post.createNewPost = ({UserId, title, body, type, PostId}) => Post.create({
-    UserId,
-    title,
-    body,
-    type,
-    PostId: PostId
-  });
+  Post.createNewPost = async ({UserId, title, body, type, PostId}) => {
+    const typeToId = {
+      Question: 1,
+      Answer: 2,
+      Comment: 3
+    };
+    const PostTypeId = typeof type === 'string' 
+      ? typeToId(type)
+      : type
+
+    if (!PostTypeId) {
+      throw new Error('invalid postid given');
+    }
+    
+    await Post.create({
+      UserId,
+      title,
+      body,
+      PostTypeId,
+      PostId
+    });
+
+    if (PostId) {
+      await Post.incComment(PostId);
+    }
+  }
+
+  Post.destroyPost = async (id) => {
+    let post;
+    try {
+      post = await Post.getPost(id);
+    } catch(err) {
+      throw new Error('post does not exist');
+    }
+    
+    await Post.destroy({
+      where: {id}
+    });
+    
+    const question = post.PostId;
+    if (question) {
+      await Post.decComment(id);
+    }
+  }
 
   Post.getPostById = (postId) => Post.findById(postId);
+
+  Post.incView = async (questionId) => {
+    await Post.increment('viewCount', {
+      where: {
+        PostId: questionId
+      }
+    });
+    await Post.increment('viewCount', {
+      where: {
+        id: questionId
+      }
+    });
+  };
+
+  const incField = (field) => (id) => Post.increment(field, {where: {id}});
+  const decField = (field) => (id) => Post.decrement(field, {where: {id}});
   
+  Post.incVote = incField('upvoteCount');
+  Post.decVote = decField('upvoteCount');
+
+  Post.incComment = incField('commentCount');
+  Post.decComment = decField('commentCount');
+
+  Post.incFavorite = incField('favoriteCount');
+  Post.decFavorite = decField('favoriteCount');
+
+  Post.close = (id, isTopAnswer = false) => Post.update({
+    closedDate: DataTypes.fn('NOW'),
+    isTopAnswer
+  });
+
   return Post;
 
 }

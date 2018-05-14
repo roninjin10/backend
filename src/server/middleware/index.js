@@ -8,8 +8,8 @@ import cors from 'cors'
 
 const applyMiddleware = (app) => {
   app.use(bodyParser.json());
-  app.use(cors({origin: 'http://localhost:3000', optionsSuccessStatus: 200}))
-  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(cors())
+  app.use(bodyParser.urlencoded({extended: false}));
   app.use(morgan);
   app.use(cookieParser());
   app.use(session);
