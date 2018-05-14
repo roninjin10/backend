@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import Promise from 'bluebird'
+import Sequelize from 'sequelize'
 
 Promise.promisifyAll(bcrypt);
 
@@ -31,6 +32,16 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.fn('NOW')
+    }
   }, {
     /*
      *  this hook is making sure we encrypt the password before storing in database

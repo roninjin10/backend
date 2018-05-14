@@ -1,4 +1,6 @@
-import { Post } from '../../db/models'
+import db from '../../db/models'
+
+const Post = db.Post;
 
 const PostTypeError = (expectedType, type) => 
   Error(`expected post of type ${expectedType} got a post of type ${type}`);
@@ -28,14 +30,16 @@ export const postById = (postType) => (req, res) =>
 
 
 export const newPost  = (postType) => (req, res) => {
-  const { userid, title, body, type, associatedQuestionId } = req.body;
+  const { UserId, title, body, type, PostId } = req.body;
   if (type !== type) {
     throw new PostTypeError(postType, type);
   }
-  Post.createNewPost(userid, title, body, type, associatedQuestionId)
+  return Post.createNewPost({UserId, title, body, type, PostId})
   .then(() => res.status(201).send('post successful'))
   .catch((err) => res.status(401).json({
       message: 'there was an error posting question',
       err
   }));
 }
+
+export { db }

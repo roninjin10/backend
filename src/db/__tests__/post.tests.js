@@ -1,67 +1,35 @@
-/*import { 
-  getAllPosts, 
-  getPostsByType, 
-  getPostsByQuery, 
-  createNewPost, 
-  getPostById, 
-} from '../util/post'
-
 import db from '../models'
 
 const Post = db.Post;
-const User = db.User;
-console.log('USERasldkfjasdfj \n \n asdfasdf', User)
-const clearDatabase = (cb) => {
-  return Post.destroy({
-    where: {},
-    truncate: true,
-    cascade: true,
-  })
-  .finally(cb);
-}
 
-const username = 'TESssdfdT_USEsdfR' + Math.random();
-const email = 'sdftest@gmail.com';
-const password = '123456789';
-
-beforeAll((done) => {
-
-  User.create({
-    username,
-    email,
-    password
-  })
-  .then(done);
-})
-
-afterAll((done) => {
-  clearDatabase(() => {
-    db.sequelize.close();
-    done();
-  });
+afterAll(async (done) => {
+  await db.sequelize.close()
+  done()
 });
 
-describe('Test createNewPost', () => {
-/*
-  test('Should create a new item in the database with valid input', (done) => {
+describe('test functions to interact with post model', () => {
+  test('createNewPost should create a new post and getPostsByQuery should retrieve it', async (done) => {
+    const UserId = 1;
+    const title = 'title';
+    const body = 'body';
+    const type = 'Question';
     
-    const title = 'Test createNewPost'
-    
-    createNewPost({
-      userid: 1,
+    const post = {
+      UserId,
       title,
-      body: 'body1',
-      type: 'Question',
-      postRefId: null,
-    })
-    .then(() => Post.findAll({}))
-    .then((posts) => posts.reduce((exists, post) => exists || post.title === title, false).length)
-    .then((l) => expect(l > 0).toBeTruthy())
-    .then(done)
-  })*/
+      body,
+      type
+    };
 
-  it('should get posts by type', () => {
-    expect('need to write a test').toBeTruthy();
-  })
+    let posts = await Post.getPostsByQuery(post);
 
-//})
+    const lengthBefore = posts.length;
+
+    await Post.createNewPost(post);
+
+    posts = await Post.getPostsByQuery(post);
+
+    expect(posts.length).toBe(lengthBefore + 1);
+    done() 
+  }) 
+})

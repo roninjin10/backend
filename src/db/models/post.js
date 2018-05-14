@@ -1,10 +1,10 @@
 export default (sequelize, DataTypes) => {
   const Post = sequelize.define('Post', {
-    associatedQuestionId: {
+    PostId: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    userid: {
+    UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -46,22 +46,22 @@ export default (sequelize, DataTypes) => {
 
   Post.getPostsByType = (type) => Post.findAll({
     where: {type}
-  });
+  })
 
   Post.getPostsByQuery = (query) => Post.findAll({
     where: query
   });
 
-  Post.createNewPost = ({userid, title, body, type, associatedQuestionId}) => Post.create({
-    userid,
+  Post.createNewPost = ({UserId, title, body, type, PostId}) => Post.create({
+    UserId,
     title,
     body,
     type,
-    associatedQuestionId: associatedQuestionId
+    PostId: PostId
   });
 
   Post.getPostById = (postId) => Post.findById(postId);
-
+  
   return Post;
 
 }

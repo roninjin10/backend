@@ -9,3 +9,4 @@ before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
     - cp src/db/config/database.yml.travis src/db/config/config.json
     - sequelize db:migrate 
+    - sequelize db:seed:all

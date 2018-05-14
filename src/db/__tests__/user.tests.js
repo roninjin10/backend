@@ -2,13 +2,14 @@ import db from '../models'
 
 const User = db.User;
 const { createUser, fetchUser, verifyPassword, verifyLogin, destroyUser } = User 
-beforeAll((done) => db.sequelize.sync({force: true})
-  .then(() => {done()})
-);
-  
-afterAll(() => db.sequelize.close());
 
-// describe('Test createUser', () => {
+  
+afterAll(async (done) => {
+  await db.sequelize.close();
+  done();
+});
+
+describe('Test createUser', () => {
 
   test('Should create a new item in the database with valid input', (done) => {
     const username = 'TEST_USER';
@@ -68,7 +69,7 @@ afterAll(() => db.sequelize.close());
         expect(false).toBeTruthY();
         done()
       })
-      .catch((err) => {
+      .catch(() => {
         expect(true).toBeTruthy
         done()
       })
@@ -94,10 +95,9 @@ afterAll(() => db.sequelize.close());
       done()
     });
   })
-// })
+})
 
-// describe('Test fetchUser', () => {
-//  beforeEach(clearDatabase);
+describe('Test fetchUser', () => {
 
   test('Should get user from database', (done) => {
     const username = 'TEST_USER';
@@ -119,7 +119,7 @@ afterAll(() => db.sequelize.close());
       done()
     })
   })
-// });
+});
 
 describe('Test verifyPassword', () => {
   
@@ -168,7 +168,7 @@ describe('Test VerifyLogin', () => {
       expect(user.email).toBe(email);
       done();
     })
-    .catch((err) => {
+    .catch(() => {
       expect(false).toBeTruthy;
       done();
     })
@@ -199,3 +199,4 @@ describe('Test VerifyLogin', () => {
     })
   })
 })
+
