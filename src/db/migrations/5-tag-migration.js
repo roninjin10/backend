@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'TagType',
+          model: 'TagTypes',
           key: 'id'
         }
       },

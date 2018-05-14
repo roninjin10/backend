@@ -1,6 +1,6 @@
 'use strict';
 
-const viewData = require('../seed/8-views');
+const viewData = require('../seed/8-view');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
