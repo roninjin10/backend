@@ -90,6 +90,19 @@ export default (sequelize, DataTypes) => {
 
   Post.getPostById = (postId) => Post.findById(postId);
 
+  Post.incrementView = async (postId) => {
+    await Post.increment('viewCount', {
+      where: {
+        PostId: postId
+      }
+    });
+    await Post.increment('viewCount', {
+      where: {
+        id: postId
+      }
+    });
+  }
+
   return Post;
 
 }
