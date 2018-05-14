@@ -32,7 +32,7 @@ module.exports = {
         allowNull: false
       },
       PostTypeId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       viewCount: {

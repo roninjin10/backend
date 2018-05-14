@@ -12,13 +12,13 @@ describe('test functions to interact with post model', () => {
     const UserId = 1;
     const title = 'title';
     const body = 'body';
-    const type = 'Question';
+    const type = 1;
     
     const post = {
       UserId,
       title,
       body,
-      type
+      PostTypeId: type
     };
 
     let posts = await Post.getPostsByQuery(post);

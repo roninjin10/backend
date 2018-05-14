@@ -29,7 +29,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     PostTypeId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     viewCount: {
@@ -61,7 +61,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE
     }
   });
-
+  
   Post.associate = (models) => {
     Post.belongsTo(models.User);
     Post.belongsTo(models.Post);
@@ -80,25 +80,39 @@ export default (sequelize, DataTypes) => {
     where: {id}
   })
 
+// TODO make this be able to take in string or number for type
   Post.getPostsByType = (type) => Post.findAll({
-    where: {type}
+    where: {PostTypeId: type}
   });
 
   Post.getPostsByQuery = (query) => Post.findAll({
     where: query
   });
 
-  Post.createNewPost = async ({userid, title, body, type, postId}) => {
+  Post.createNewPost = async ({UserId, title, body, type, PostId}) => {
+    const typeToId = {
+      Question: 1,
+      Answer: 2,
+      Comment: 3
+    };
+    const PostTypeId = typeof type === 'string' 
+      ? typeToId(type)
+      : type
+
+    if (!PostTypeId) {
+      throw new Error('invalid postid given');
+    }
+    
     await Post.create({
-      userid,
+      UserId,
       title,
       body,
-      PostTypeId: type,
-      PostId: postId
+      PostTypeId,
+      PostId
     });
 
-    if (postId) {
-      await Post.incComment(postId);
+    if (PostId) {
+      await Post.incComment(PostId);
     }
   }
 
