@@ -1,4 +1,11 @@
-import { db, newPost } from '../controller/post'
+import { 
+  db, 
+  newPost, 
+  allPosts,
+  byQuery,
+  postsByType,
+  postById,
+} from '../controller/post'
 
 afterAll(async (done) => {
   await db.sequelize.close();
@@ -23,14 +30,14 @@ const fakeAnswer = {
 
 class Res {
   status(status) {
-    this.status = status;
+    this.statuscode = status;
     console.log('status sent:', status);
     return this;
   }
 
   send(message) {
     this.sentMessage = message;
-    console.log('new message', message);
+    // console.log('new message', message);
     return this;
   }
 
@@ -49,14 +56,66 @@ describe('newPost function from controller/post.js', () => {
 
     await newQuestion(req, res);
 
-    expect(res.status).toBe(201);
+    expect(res.statuscode).toBe(201);
   });
 
-  test('should create a newAnswer', async () => {
+  test('should create a newAnswer', async (done) => {
     const req = {body: fakeAnswer};
     const res = new Res();
 
     await newAnswer(req, res);
-    expect(res.status).toBe(201);
+    expect(res.statuscode).toBe(201);
+    done();
   })
+});
+
+describe('get requests should return 200s', () => {
+  test('allPosts should return a 200', async (done) => {
+    const req = {};
+    const res = new Res();
+
+    await allPosts(req, res);
+    expect(res.statuscode).toBe(200);
+  
+    done();
+  })
+
+  test('byQuery should return a 200', async (done) => {
+    const req = {query: {
+      PostTypeId: 1
+    }};
+    const res = new Res();
+
+    await byQuery(req, res);
+
+    expect(res.statuscode).toBe(200);
+
+    done();
+  })
+
+  test('postsByType should return a 200', async (done) => {
+    const req = {query: {
+      PostTypeId: 1
+    }};
+    const res = new Res();
+
+    await postsByType(1)(req, res);
+
+    expect(res.statuscode).toBe(200);
+
+    done();
+  });
+
+  test('postById should return a 200', async (done) => {
+    const req = {params: {
+      id: 1
+    }};
+    const res = new Res();
+
+    await postById(1)(req, res);
+    console.log(res.message);
+    expect(res.statuscode).toBe(200);
+
+    done();
+  });
 })

@@ -74,7 +74,7 @@ export default (sequelize, DataTypes) => {
 
   Post.getAllPosts = () => Post.findAll({
     include: [{all: true}]
-  });
+  })
 
 // TODO make this be able to take in string or number for type
   Post.getPostsByType = (type) => Post.findAll({
