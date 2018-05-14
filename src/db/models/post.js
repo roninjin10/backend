@@ -32,6 +32,30 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'comment'
     },
+    viewCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    answerCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    isTopAnswer: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN
+    },
+    commentCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    favoriteCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    upvoteCount: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    }
   });
 
   Post.associate = (models) => {

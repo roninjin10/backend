@@ -43,15 +43,9 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('NOW')
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('NOW')
+      isTopAnswer: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
       },
       commentCount: {
         defaultValue: 0,
@@ -61,9 +55,23 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER
       },
+      upvoteCount: {
+        defaultValue: 0,
+        type: Sequelize.INTEGER
+      },
       closedDate: {
         allowNull: true,
         type: Sequelize.DATE
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
