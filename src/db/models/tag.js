@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Tag = sequelize.define('Tag', {
+  const Tag = sequelize.define('Tags', {
     PostId: {
       type: DataTypes.INTEGER,
       allowNull: true
