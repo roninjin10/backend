@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  var VoteType = sequelize.define('VoteType', {
+  const VoteType = sequelize.define('VoteType', {
     name: {
       type: DataTypes.STRING,
       allowNull: false

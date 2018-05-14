@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  var Vote = sequelize.define('Vote', {
+  const Vote = sequelize.define('Vote', {
     PostId: {
       type: DataTypes.INTEGER,
       allowNull: true

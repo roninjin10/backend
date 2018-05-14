@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  var TagType = sequelize.define('TagType', {
+  const TagType = sequelize.define('TagType', {
     name: {
       type: DataTypes.STRING,
       allowNull: false
