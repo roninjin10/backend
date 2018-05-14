@@ -44,12 +44,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       createdAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       commentCount: {
         defaultValue: 0,
@@ -65,7 +67,7 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface, /*Sequelize*/) => {
     return queryInterface.dropTable('Posts');
   }
 };
