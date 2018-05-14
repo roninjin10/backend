@@ -1,6 +1,5 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
 import Promise from 'bluebird'
-import Sequelize from 'sequelize'
 
 Promise.promisifyAll(bcrypt);
 
@@ -31,21 +30,8 @@ export default (sequelize, DataTypes) => {
           msg: 'Please enter a password with at least 3 characters'
         }
       }
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('NOW')
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('NOW')
     }
   }, {
-    /*
-     *  this hook is making sure we encrypt the password before storing in database
-     */
     hooks: {
       afterValidate: (user) => {
         user.password = bcrypt.hashSync(user.password, 8);
@@ -55,6 +41,9 @@ export default (sequelize, DataTypes) => {
   
   User.associate = function(models) {
     User.hasMany(models.Post);
+    User.hasMany(models.Vote);
+    User.hasMany(models.View);
+    User.hasMany(models.Tag);
   };
   
   User.createUser = (newUser) => User.create(newUser);
@@ -63,15 +52,16 @@ export default (sequelize, DataTypes) => {
     where: {username}
   });
 
-  User.fetchUser = (username) => User.findOne({
+  User.getUser = (username) => User.findOne({
     where: {username}
   })
 
   User.verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
+  
 
   User.verifyLogin = async (username, password) => {
     
-    let user = await User.fetchUser(username);
+    let user = await User.getUser(username);
     
     if (!user) {
       throw new Error('username does not exist');
@@ -92,8 +82,5 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   });
 
-
-
-  
   return User;
 };

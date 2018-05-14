@@ -13,16 +13,17 @@ router.post('/user/signup', user.post.signup);
 router.post('/user/signin', user.post.login);
 router.post('/user/signout', user.post.logout);
 
-router.get('/post', byQuery);
+router.get('/post', byQuery); // requires query string
 
 router.get('/questions/all', question.get.questions.all);
 router.get('/questions', question.get.questions);
-router.get('/questions/:qid', question.get.question);
+// returns question and all answers
+router.get('/questions/:id', question.get.question); 
 router.post('/question', question.post.question);
 
 router.get('/answers/all', answer.get.answers.all);
 router.get('/answers', answer.get.answers);
-router.get('/answers/:aid', answer.get.answer);
+router.get('/answers/:id', answer.get.answer);
 router.post('/answer', answer.post.answer);
 
 export default router
