@@ -40,6 +40,8 @@ export default (sequelize, DataTypes) => {
     Post.hasMany(models.Post);
     Post.belongsTo(models.PostType);
     Post.hasMany(models.Tag);
+    Post.hasMany(models.Vote);
+    Post.hasMany(models.View);
   };
 
   Post.getAllPosts = () => Post.findAll({

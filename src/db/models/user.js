@@ -38,6 +38,9 @@ export default (sequelize, DataTypes) => {
   
   User.associate = function(models) {
     User.hasMany(models.Post);
+    User.hasMany(models.Vote);
+    User.hasMany(models.View);
+    User.hasMany(models.Tag);
   };
   
   User.createUser = (newUser) => User.create(newUser);

@@ -8,5 +8,5 @@ export default (sequelize, DataTypes) => {
   VoteType.associate = (models) => {
     VoteType.hasMany(models.Vote);
   }
-  return VoteType
-}
+  return VoteType;
+};
