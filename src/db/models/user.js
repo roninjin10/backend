@@ -1,8 +1,4 @@
 import bcrypt from 'bcrypt';
-import Promise from 'bluebird'
-import Sequelize from 'sequelize'
-
-Promise.promisifyAll(bcrypt);
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -31,21 +27,8 @@ export default (sequelize, DataTypes) => {
           msg: 'Please enter a password with at least 3 characters'
         }
       }
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('NOW')
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.fn('NOW')
     }
   }, {
-    /*
-     *  this hook is making sure we encrypt the password before storing in database
-     */
     hooks: {
       afterValidate: (user) => {
         user.password = bcrypt.hashSync(user.password, 8);
