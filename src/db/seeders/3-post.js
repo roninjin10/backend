@@ -1,6 +1,6 @@
 'use strict';
 
-const postData = require('../seed/user');
+const postData = require('../seed/3-user');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {

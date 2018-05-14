@@ -62,7 +62,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       closedDate: {
-        defaultValue: 0,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

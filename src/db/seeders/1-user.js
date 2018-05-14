@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 
-const userData = require('../seed/user');
+const userData = require('../seed/1-user');
 
 module.exports = {
   
