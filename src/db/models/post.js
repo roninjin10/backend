@@ -89,20 +89,18 @@ export default (sequelize, DataTypes) => {
     where: query
   });
 
-  Post.createNewPost = async ({UserId, title, body, type, PostId}) => {
-    const typeToId = {
-      Question: 1,
-      Answer: 2,
-      Comment: 3
-    };
-    const PostTypeId = typeof type === 'string' 
-      ? typeToId(type)
-      : type
+  const typeToId = {
+    Question: 1,
+    Answer: 2,
+    Comment: 3,
+    1: 1,
+    2: 2,
+    3: 3
+  };
 
-    if (!PostTypeId) {
-      throw new Error('invalid postid given');
-    }
-    
+  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId}) => {
+    PostTypeId = PostTypeId || typeToId[type];
+    console.log(PostTypeId, type);
     await Post.create({
       UserId,
       title,

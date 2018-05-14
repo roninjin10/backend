@@ -1,4 +1,7 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
+import Promise from 'bluebird'
+
+Promise.promisifyAll(bcrypt);
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -54,6 +57,7 @@ export default (sequelize, DataTypes) => {
   })
 
   User.verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
+  
 
   User.verifyLogin = async (username, password) => {
     
@@ -78,8 +82,5 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   });
 
-
-
-  
   return User;
 };

@@ -114,7 +114,7 @@ describe('Test getUser', () => {
       expect(user.email).toBe(email)
       done()
     })
-    .catch((err) => {
+    .catch(() => {
       expect(false).toBeTruthy()
       done()
     })
@@ -138,14 +138,16 @@ describe('Test verifyPassword', () => {
     getUser(username)
     .then((user) => verifyPassword(password, user.password))
     .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .finally(() => done());
   });
 
   test('incorrect password should return a falsy value', (done) => {
     getUser(username)
     .then((user) => verifyPassword('wrong password', user.password))
-    .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .catch(() => {
+      expect(false).toBeTruthy
+    })
+    .finally(() => done());
   });
 });
 
