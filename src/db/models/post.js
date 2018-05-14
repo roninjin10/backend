@@ -28,9 +28,9 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    type: {
+    PostTypeId: {
       type: DataTypes.STRING,
-      defaultValue: 'comment'
+      allowNull: false
     },
     viewCount: {
       defaultValue: 0,
@@ -93,7 +93,7 @@ export default (sequelize, DataTypes) => {
       userid,
       title,
       body,
-      type,
+      PostTypeId: type,
       PostId: postId
     });
 
