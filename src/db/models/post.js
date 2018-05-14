@@ -31,13 +31,15 @@ export default (sequelize, DataTypes) => {
     type: {
       type: DataTypes.STRING,
       defaultValue: 'comment'
-    }
+    },
   });
 
   Post.associate = (models) => {
     Post.belongsTo(models.User);
     Post.belongsTo(models.Post);
     Post.hasMany(models.Post);
+    Post.belongsTo(models.PostType);
+    Post.hasMany(models.Tag);
   };
 
   Post.getAllPosts = () => Post.findAll({
@@ -46,22 +48,22 @@ export default (sequelize, DataTypes) => {
 
   Post.getPostsByType = (type) => Post.findAll({
     where: {type}
-  })
+  });
 
   Post.getPostsByQuery = (query) => Post.findAll({
     where: query
   });
 
-  Post.createNewPost = ({UserId, title, body, type, PostId}) => Post.create({
-    UserId,
+  Post.createNewPost = ({userid, title, body, type, associatedQuestionId}) => Post.create({
+    userid,
     title,
     body,
     type,
-    PostId: PostId
+    associatedQuestionId: associatedQuestionId
   });
 
   Post.getPostById = (postId) => Post.findById(postId);
-  
+
   return Post;
 
 }
