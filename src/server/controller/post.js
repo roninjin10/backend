@@ -8,7 +8,7 @@ const PostTypeError = (expectedType, type) => new Error(`expected post of type $
 export const allPosts = (req, res) => 
   Post.getPostsByQuery()
   .then((posts) => res.status(200).json(posts))
-  .catch((err) => console.log('error in all posts', err)) //res.status(404).json(err));
+  .catch((err) => res.status(404).json(err));
 
 export const byQuery = (req, res) => 
   Post.getPostsByQuery(req.query)
@@ -28,7 +28,7 @@ export const postById = (postType) => (req, res) =>
     }
     res.status(200).json(post)
   })
-  .catch((err) => console.log(err)) //res.status(404).json(err));
+  .catch((err) => res.status(404).json(err));
 
 export const newPost  = (postType) => (req, res) => {
   const { UserId, title, body, PostTypeId, PostId, type } = req.body;
