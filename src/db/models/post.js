@@ -76,18 +76,16 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   });
 
-  Post.getPost = (id) => Post.findOne({
-    where: {id}
-  })
-
 // TODO make this be able to take in string or number for type
   Post.getPostsByType = (type) => Post.findAll({
     where: {PostTypeId: type}
-  });
+  })
 
-  Post.getPostsByQuery = (query) => Post.findAll({
-    where: query
-  });
+  Post.getPostsByQuery = (query) => {
+    return Post.findAll({
+      where: query
+    })
+  }
 
   const typeToId = {
     Question: 1,
@@ -100,7 +98,7 @@ export default (sequelize, DataTypes) => {
 
   Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId}) => {
     PostTypeId = PostTypeId || typeToId[type];
-    console.log(PostTypeId, type);
+
     await Post.create({
       UserId,
       title,
@@ -132,7 +130,7 @@ export default (sequelize, DataTypes) => {
     }
   }
 
-  Post.getPostById = (postId) => Post.findById(postId);
+  Post.getPostById = (postId) => Post.findById(postId)
 
   Post.incView = async (questionId) => {
     await Post.increment('viewCount', {
