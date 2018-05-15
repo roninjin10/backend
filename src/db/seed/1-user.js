@@ -36,4 +36,12 @@ const userData = [
   }
 ];
 
+for (let i = 1; i < 101; i++) {
+  userData.push({
+    username: 'user' + i,
+    password: 'user' + i,
+    email: 'email' + i + '@email.com'
+  })
+}
+
 module.exports = userData;
