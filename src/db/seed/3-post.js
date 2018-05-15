@@ -27,6 +27,7 @@ const questionBodys = [
   'i am question 10 body',
   'i am question 11 body',
 ]
+const loremIpsum = ` Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum`
 
 const answerBodys = [
   'i am answer 1 body',
@@ -45,7 +46,9 @@ const answerBodys = [
   'i am answer 14 body',
   'i am answer 15 body',
   'i am answer 16 body',
-];
+].map(body => body + loremIpsum);
+
+
 
 for (let user = 1; user < 101; user++) {
   for (let i = 0; i < title.length; i++) {
@@ -62,7 +65,7 @@ for (let user = 1; user < 101; user++) {
   for (let i = 0; i < answerBodys.length; i++) {
     postData.push({
       UserId: user,
-      body: questionBodys[i],
+      body: answerBodys[i],
       PostTypeId: 2,
       PostId: Math.floor(Math.random() * questionBodys.length + 1)
     })

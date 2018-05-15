@@ -1,4 +1,4 @@
-const userData = [
+let userData = [
   {
     username: "kyle",
     password: "kyle",
@@ -36,12 +36,16 @@ const userData = [
   }
 ];
 
+let out = []
+
 for (let i = 1; i < 101; i++) {
-  userData.push({
+  out.push({
     username: 'user' + i,
     password: 'user' + i,
     email: 'email' + i + '@email.com'
   })
 }
+
+userData = out.concat(userData);
 
 module.exports = userData;
