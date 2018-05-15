@@ -63,6 +63,11 @@ const sortParams = [
  * 
  * http://catalyst/posts/?sortBy=-upVoteCount&limitBy=50
  * 
+ * 
+ * limitBy defaults to 50.  It can be turned off with
+ * 
+ * limitBy=all
+ * 
  */
 
 //const otherParams = [
