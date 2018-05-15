@@ -1,67 +1,134 @@
-/*import { 
-  getAllPosts, 
-  getPostsByType, 
-  getPostsByQuery, 
-  createNewPost, 
-  getPostById, 
-} from '../util/post'
-
 import db from '../models'
 
 const Post = db.Post;
-const User = db.User;
-console.log('USERasldkfjasdfj \n \n asdfasdf', User)
-const clearDatabase = (cb) => {
-  return Post.destroy({
-    where: {},
-    truncate: true,
-    cascade: true,
+
+afterAll(async (done) => {
+  await db.sequelize.close()
+  done()
+});
+
+const UserId = 1;
+const title = 'title';
+const body = 'body';
+const type = 1;
+
+const post = {
+  UserId,
+  title,
+  body,
+};
+
+describe('test createNewPost and getPOstsByQuery', () => {
+  
+
+  test('createNewPost should create a new post and getPostsByQuery should retrieve it', async (done) => {
+
+    let posts = await Post.getPostsByQuery(post);
+    
+    const lengthBefore = posts.length;
+
+    await Post.createNewPost({...post, type});
+
+    posts = await Post.getPostsByQuery(post);
+
+    expect(posts.length).toBe(lengthBefore + 1);
+    done() 
   })
-  .finally(cb);
-}
 
-const username = 'TESssdfdT_USEsdfR' + Math.random();
-const email = 'sdftest@gmail.com';
-const password = '123456789';
+});
 
-beforeAll((done) => {
+describe('test getAllPosts', () => {
+  
+  test('getAllPosts should get all posts', async (done) => {
 
-  User.create({
-    username,
-    email,
-    password
-  })
-  .then(done);
-})
+    let posts = await Post.getPostsByQuery(post);
+    expect(posts.length > 0).toBe(true);
+    
+    const lengthBefore = posts.length;
 
-afterAll((done) => {
-  clearDatabase(() => {
-    db.sequelize.close();
+    await Post.createNewPost({...post, PostTypeId: type});
+
+    posts = await Post.getPostsByQuery(post);
+    expect(posts.length).toBe(lengthBefore + 1);
+
+    done();
+  });
+
+  test('getPostById should find a post by id', async (done) => {
+
+    let post = await Post.getPostById(1)
+
+    expect(post.title).toBe('This is question number 1?');
+
     done();
   });
 });
 
-describe('Test createNewPost', () => {
-/*
-  test('Should create a new item in the database with valid input', (done) => {
-    
-    const title = 'Test createNewPost'
-    
-    createNewPost({
-      userid: 1,
-      title,
-      body: 'body1',
-      type: 'Question',
-      postRefId: null,
-    })
-    .then(() => Post.findAll({}))
-    .then((posts) => posts.reduce((exists, post) => exists || post.title === title, false).length)
-    .then((l) => expect(l > 0).toBeTruthy())
-    .then(done)
-  })*/
+describe('test getPostsByType', () => {
+  test('getPostsByType should only find correct type', async (done) => {
+    let posts = await Post.getPostsByType(1);
+    expect(posts.length > 0).toBe(true);
 
-  it('should get posts by type', () => {
-    expect('need to write a test').toBeTruthy();
+    const lengthBefore = posts.length;
+
+    await Post.createNewPost({...post, PostTypeId: 2});
+    console.log(lengthBefore);    
+    posts = await Post.getPostsByType(1);
+
+    expect(posts.length).toBe(lengthBefore);
+  
+    await Post.createNewPost({...post, PostTypeId: 1});
+
+    posts = await Post.getPostsByType(1);
+
+    expect(posts.length).toBe(lengthBefore + 1);
+    // console.log(posts);
+    for (const post of posts) {
+      expect(post.PostTypeId).toBe(1);
+    }
+
+    done();
   })
+})
+/*
+describe('test getPostsByQuery', () => {
+  test('getPostsByQuery should be able to find all the posts from ')
+})
 
-//})
+
+describe('test destroyPost', () => {
+  test('post should be destroyed after calling destroyPost on it', () => {
+    
+  })
+})
+*/
+
+describe('test upvoteCount', () => {
+  test('incVote should increase the number of upvotes', async (done) => {
+    let post = await Post.getPostById(3);
+
+    const upvotesBefore = post.upvoteCount;
+
+    await Post.incVote(3);
+    
+    post = await Post.getPostById(3);
+
+    expect(post.upvoteCount).toBe(upvotesBefore + 1);
+
+    done();
+  });
+
+  test('decVote should decrease the number of upvotes', async (done) => {
+    let post = await Post.getPostById(3);
+
+    const upvotesBefore = post.upvoteCount;
+    
+    await Post.decVote(3);
+    
+    post = await Post.getPostById(3);
+
+    expect(post.upvoteCount).toBe(upvotesBefore - 1);
+
+    done();
+  })
+})

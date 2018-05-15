@@ -1,14 +1,15 @@
 import db from '../models'
 
 const User = db.User;
-const { createUser, fetchUser, verifyPassword, verifyLogin, destroyUser } = User 
-beforeAll((done) => db.sequelize.sync({force: true})
-  .then(() => {done()})
-);
-  
-afterAll(() => db.sequelize.close());
+const { createUser, getUser, verifyPassword, verifyLogin, destroyUser } = User 
 
-// describe('Test createUser', () => {
+  
+afterAll(async (done) => {
+  await db.sequelize.close();
+  done();
+});
+
+describe('Test createUser', () => {
 
   test('Should create a new item in the database with valid input', (done) => {
     const username = 'TEST_USER';
@@ -68,7 +69,7 @@ afterAll(() => db.sequelize.close());
         expect(false).toBeTruthY();
         done()
       })
-      .catch((err) => {
+      .catch(() => {
         expect(true).toBeTruthy
         done()
       })
@@ -94,10 +95,9 @@ afterAll(() => db.sequelize.close());
       done()
     });
   })
-// })
+})
 
-// describe('Test fetchUser', () => {
-//  beforeEach(clearDatabase);
+describe('Test getUser', () => {
 
   test('Should get user from database', (done) => {
     const username = 'TEST_USER';
@@ -109,17 +109,17 @@ afterAll(() => db.sequelize.close());
       email,
       password
     })
-    .then(() => fetchUser(username))
+    .then(() => getUser(username))
     .then((user) => {
       expect(user.email).toBe(email)
       done()
     })
-    .catch((err) => {
+    .catch(() => {
       expect(false).toBeTruthy()
       done()
     })
   })
-// });
+});
 
 describe('Test verifyPassword', () => {
   
@@ -135,17 +135,19 @@ describe('Test verifyPassword', () => {
   })
 
   test('correct password should return a truthy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword(password, user.password))
     .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .finally(() => done());
   });
 
   test('incorrect password should return a falsy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword('wrong password', user.password))
-    .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .catch(() => {
+      expect(false).toBeTruthy
+    })
+    .finally(() => done());
   });
 });
 
@@ -168,7 +170,7 @@ describe('Test VerifyLogin', () => {
       expect(user.email).toBe(email);
       done();
     })
-    .catch((err) => {
+    .catch(() => {
       expect(false).toBeTruthy;
       done();
     })
@@ -199,3 +201,4 @@ describe('Test VerifyLogin', () => {
     })
   })
 })
+
