@@ -86,7 +86,7 @@ const parseSortParams = (queryParams) => {
 const parseLimitParams = (queryParams) => {
   if ('limitBy' in queryParams) {
     return {
-      limit: queryParams[limitBy]
+      limit: queryParams['limitBy']
     };
   }
   return {};
@@ -99,6 +99,11 @@ const createQuery = (queryParams) => {
 
   return {...where, ...sort, ...limit};
 };
+
+const queryPost = (queryParams) => {
+  const query = createQuery(queryParams);
+  return db.Post.findAll(query);
+}
 
 export default queryPost
 
