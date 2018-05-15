@@ -18,7 +18,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
     const query = await queryPost({
       id: 1,      
     });
-
+    console.log(query);
     expect(query.length).toBe(1);
 
     for (const post of query) {

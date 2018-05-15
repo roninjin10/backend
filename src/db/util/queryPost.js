@@ -10,6 +10,22 @@ import db from '../models'
  * http://catalyst/posts/?isTopAnswer=true
  *
  */
+const camelCase = {
+  'id': 'id',
+  'postid': 'PostId',
+  'userid': 'UserId',
+  'title': 'title',
+  'posttypeid': 'PostTypeId',
+  'istopanswer': 'isTopAnswer',
+  'tagname': 'tagName',
+  'viewcount': 'viewCount',
+  'answercount': 'answerCount',
+  'favoritecount': 'favoriteCount',
+  'upvotecount': 'upvoteCount',
+  'createdat': 'createdAt',
+  'closeddate': 'closedDate',
+  'limitby': 'limitBy',
+};
 
 const filterParams = [
   'id',
@@ -49,14 +65,13 @@ const sortParams = [
  * 
  */
 
-const otherParams = [
-  'limitBy',
-];
+//const otherParams = [
+//  'limitBy',
+// ];
 
 const parseFilterParams = (queryParams) => ({
   where: filterParams.reduce((a, e) => {
     if (e in queryParams) {
-      console.log('e in queryParams', queryParams, e, a[e], queryParams[e])
       return {
         ...a,
         [e]: queryParams[e],
@@ -108,7 +123,40 @@ const createQuery = (queryParams) => {
   return {...where, ...sort, ...limit};
 };
 
+const camelParams = (queryParams) => {
+  let out = {};
+  
+  Object.keys(queryParams).map(key => {
+    let value = queryParams[key];
+    if (key in camelCase) {
+      key = camelCase[key];
+    }
+    if (value in camelCase) {
+      value = camelCase[value];
+    }
+    out[key] = value;
+  });
+  
+  return out;
+};
+
+const objToLowerCase = (obj) => {
+  let out = {}
+  for (let k in obj) {
+    let key = k;
+    let value = obj[k];
+    if (typeof key === 'string') {
+      key = k.toLowerCase();
+    }
+    if (typeof value === 'string') {
+      value = value.toLowerCase();
+    }
+    out[key] = value;
+  }
+  return out
+}
 const queryPost = (queryParams) => {
+  queryParams = camelParams(objToLowerCase(queryParams));
   const query = createQuery(queryParams);
   return db.Post.findAll(query);
 }
