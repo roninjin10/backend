@@ -38,7 +38,7 @@ const sortParams = [
   'upvoteCount',
   'createdAt',
   'closedDate',
-]
+];
 
 /*
  * Examples of how to use other params:
@@ -51,40 +51,42 @@ const sortParams = [
 
 const otherParams = [
   'limitBy',
-]
+];
 
 const parseFilterParams = (queryParams) => ({
   where: filterParams.reduce((a, e) => {
     if (e in queryParams) {
-      a[e] = queryParams[e];
+      console.log('e in queryParams', queryParams, e, a[e], queryParams[e])
+      return {
+        ...a,
+        [e]: queryParams[e],
+      };
     }
+    return a;
   }, {})
 });
 
 const parseSortParams = (queryParams) => {
-  const filters = filterParams.reduce((a, e) => {
-    if (e === 'sortBy') {
+  const field = queryParams['sortBy'];
 
-      const field = queryParams[e];
-      let direction = field.splice(0,1);
+  if (field) {
+    let direction = field.splice(0,1);
       
-      if (!['+', '-'].includes(direction)) {
-        throw new Error('no direction specified for sortBy');
-      } else if (!sortParams.includes(field)) {
-        throw new Error('sortBy parameter is invalid');
-      }
-      
-      a.push([field, direction === '+' ? 'ASC' : 'DESC']);
+    if (!['+', '-'].includes(direction)) {
+      throw new Error('no direction specified for sortBy');
+    } else if (!sortParams.includes(field)) {
+      throw new Error('sortBy parameter is invalid');
     }
-  }, []);
-  
-  return filters.length > 0 ? {
-    order: filters
-  } : {};
+      
+    return {
+      order:  [field, direction === '+' ? 'ASC' : 'DESC']
+    };
+  }
+  return {};
 }
 
 const parseLimitParams = (queryParams) => {
-  if ('limitBy' in queryParams) {
+  if (otherParams[0] in queryParams) {
     return {
       limit: queryParams['limitBy']
     };
@@ -93,9 +95,13 @@ const parseLimitParams = (queryParams) => {
 }
 
 const createQuery = (queryParams) => {
+  console.log('queryParams', queryParams);
   const where = parseFilterParams(queryParams);
   const sort = parseSortParams(queryParams);
   const limit = parseLimitParams(queryParams);
+  console.log('where', where);
+  console.log('sort', sort);
+  console.log('limit', limit);
 
   return {...where, ...sort, ...limit};
 };
@@ -105,6 +111,7 @@ const queryPost = (queryParams) => {
   return db.Post.findAll(query);
 }
 
+export { db } 
 export default queryPost
 
 /*
