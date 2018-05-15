@@ -67,41 +67,43 @@ const parseFilterParams = (queryParams) => ({
 });
 
 const parseSortParams = (queryParams) => {
-  const field = queryParams['sortBy'];
-
+  let field = queryParams['sortBy'];
   if (field) {
-    let direction = field.splice(0,1);
-      
+    let fieldArr = field.split('')
+    let direction = fieldArr.splice(0,1)[0];
+    
+    field = fieldArr.join('');
     if (!['+', '-'].includes(direction)) {
       throw new Error('no direction specified for sortBy');
     } else if (!sortParams.includes(field)) {
       throw new Error('sortBy parameter is invalid');
     }
-      
+    
     return {
-      order:  [field, direction === '+' ? 'ASC' : 'DESC']
+      order:  [
+        [field, direction === '+' ? 'ASC' : 'DESC']
+      ],
     };
   }
   return {};
 }
 
 const parseLimitParams = (queryParams) => {
-  if (otherParams[0] in queryParams) {
+  if ('limitBy' in queryParams) {
+    if (queryParams['limitBy'] === 'all') {
+      return {};
+    }
     return {
       limit: queryParams['limitBy']
     };
   }
-  return {};
+  return {limit: 50};
 }
 
 const createQuery = (queryParams) => {
-  console.log('queryParams', queryParams);
   const where = parseFilterParams(queryParams);
   const sort = parseSortParams(queryParams);
   const limit = parseLimitParams(queryParams);
-  console.log('where', where);
-  console.log('sort', sort);
-  console.log('limit', limit);
 
   return {...where, ...sort, ...limit};
 };

@@ -113,7 +113,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
     done();
   });
 */
-/*
+
 test('should be able to sort by viewCount forwards and backwards', async (done) => {
     const query = await queryPost({
       sortBy: '+viewCount'
@@ -240,20 +240,19 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     let lastViewCount = query[0].createdAt;
 
     for (const post of query) {
-      expect(post.createdAt <= lastViewCount).toBeTruthy();
+      expect(post.createdAt >= lastViewCount).toBeTruthy();
       lastViewCount = post.createdAt;
     }
 
     const query2 = await queryPost({
       sortBy: '-createdAt'
     });
-
     expect(query2.length > 0).toBeTruthy();
 
-    lastViewCount = query[0].createdAt;
+    lastViewCount = query2[0].createdAt;
 
     for (const post of query2) {
-      expect(post.createdAt >= lastViewCount).toBeTruthy();
+      expect(post.createdAt <= lastViewCount).toBeTruthy();
       lastViewCount = post.createdAt
     }
     done();
@@ -299,6 +298,24 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     done();
   });
 
+  test('should limit by 50 by default', async (done) => {
+    const query = await queryPost({
+    });
+
+    expect(query.length).toBe(50);
+
+    done();
+  })
+
+  test('passing all into it should remove limit', async (done) => {
+    const query = await queryPost({
+      limitBy: 'all'
+    });
+
+    expect(query.length > 100).toBeTruthy();
+
+    done()
+  })
 
   test('should be able to do a complicated multi parameter query', async (done) => {
     const query = await queryPost({
@@ -320,5 +337,5 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     done();
   });
 
-  */
+  
 });
