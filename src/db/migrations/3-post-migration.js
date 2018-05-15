@@ -28,7 +28,7 @@ module.exports = {
         allowNull: true,
       },
       body: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       PostTypeId: {

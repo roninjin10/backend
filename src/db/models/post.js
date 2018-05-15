@@ -19,12 +19,12 @@ export default (sequelize, DataTypes) => {
       }
     },
     body: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         len: {
-          args: [1, 2000],
-          msg: 'Please enter a post between 1 and 2000 characters'
+          args: [1, 5000],
+          msg: 'Please enter a post between 1 and 5000 characters'
         }
       }
     },

@@ -3,7 +3,7 @@ import { Router } from 'express'
 import user from './controller/user'
 import question from './controller/question'
 import answer from './controller/answer'
-import { byQuery } from './controller/post'
+import queryPostController from './controller/queryPost'
 
 const router = Router();
 
@@ -13,7 +13,8 @@ router.post('/user/signup', user.post.signup);
 router.post('/user/signin', user.post.login);
 router.post('/user/signout', user.post.logout);
 
-router.get('/post', byQuery); // requires query string
+// documentation in db/util/queryPost
+router.get('/post', queryPostController);
 
 router.get('/questions/all', question.get.questions.all);
 router.get('/questions', question.get.questions);
