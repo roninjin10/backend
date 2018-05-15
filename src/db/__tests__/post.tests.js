@@ -58,7 +58,7 @@ describe('test getAllPosts', () => {
 
     let post = await Post.getPostById(1)
 
-    expect(post.title).toBe('This is question number 1?');
+    expect(post.title).toBe('i am title 1');
 
     done();
   });
