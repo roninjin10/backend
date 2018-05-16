@@ -25,6 +25,20 @@ const camelCase = {
   'createdat': 'createdAt',
   'closeddate': 'closedDate',
   'limitby': 'limitBy',
+  'sortby': 'sortBy',
+  // sort params
+  '+viewcount': '+viewCount',
+  '+answercount': '+answerCount',
+  '+favoritecount': '+favoriteCount',
+  '+upvotecount': '+upvoteCount',
+  '+createdat': '+createdAt',
+  '+closeddate': '+closedDate',
+  '-viewcount': '-viewCount',
+  '-answercount': '-answerCount',
+  '-favoritecount': '-favoriteCount',
+  '-upvotecount': '-upvoteCount',
+  '-createdat': '-createdAt',
+  '-closeddate': '-closedDate',
 };
 
 const filterParams = [
@@ -98,7 +112,9 @@ const parseSortParams = (queryParams) => {
     } else if (!sortParams.includes(field)) {
       throw new Error('sortBy parameter is invalid');
     }
-    
+    if (field === 'createdAt') {
+      console.log('queryparams\n\n\n', queryParams, 'fieldArr \n\n\n\n', fieldArr, 'field\n\n\n', field, 'direciton\n\n', direction)
+    }
     return {
       order:  [
         [field, direction === '+' ? 'ASC' : 'DESC']

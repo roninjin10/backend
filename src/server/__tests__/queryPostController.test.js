@@ -6,7 +6,7 @@ afterAll(async (done) => {
 });
 
 const fakeQueryParams = {
-  sortBy: 'viewCount',
+  sortBy: '+viewCount',
   id: 1,
   PostTypeId: 1
 };
