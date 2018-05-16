@@ -22,11 +22,11 @@ let scrapedFiles = 0;
 let name = 'will'
 
 let start = 1480550400;
-if (eric || kyle) {
+if (eric) {
   start += 500000;
-  name = 'kyle'
+  name = 'eric'
 } else if (kyle) {
-  start += 500000;
+  start += 1000000;
   name = 'kyle'
 }
 
