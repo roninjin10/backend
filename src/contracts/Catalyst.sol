@@ -13,6 +13,7 @@ contract Question {
     uint endTime = uint32(now + duration);
     // how much the quesiton is worth.  Data type should be?
     uint bounty;
+    address asker;
 
     bool ended;
 
@@ -22,15 +23,19 @@ contract Question {
     struct Answer {
         // the address the payout will go to should this answer win
         address answerOwner;
-        // a unique id identifying the answer.  
-        uint16 id;
         // how many upvotes and downvotes a question has
         uint16 upvotes;
         uint16 downvotes;
     }
 
     // a structure representing a vote
-    struct Vote 
+    struct Vote {
+        // address of the person who cast the vote
+        address voteOwner;
+        // id of the answer they voted for
+        uint16 id;
+        // might need more
+    }
 
     // we want to store the answers in an array
     Answer[] public answers;
@@ -56,12 +61,18 @@ contract Question {
     }
 
     // allows both the questionAsker and anybody else to increase bounty
+    // takes form of a downvote on the site
     function increaseBounty() public {
 
     }
 
     // allows the question answer or us to extend the deadline of the question
     function extendEndTime() public {
+
+    }
+
+    // pays out people who upvoted the best answer
+    function _payoutUpvotes() private {
 
     }
 
@@ -76,7 +87,9 @@ contract Question {
 
         // interactions
         // transfer the amount to the best answer
-        _bestAnswer().transfer(bounty);
+        address _winner = _bestAnswer();
+        winner.transfer(bounty / 2);
+        _payoutUpvotes();
     }
     
     /*
