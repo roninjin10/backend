@@ -112,9 +112,7 @@ const parseSortParams = (queryParams) => {
     } else if (!sortParams.includes(field)) {
       throw new Error('sortBy parameter is invalid');
     }
-    if (field === 'createdAt') {
-      console.log('queryparams\n\n\n', queryParams, 'fieldArr \n\n\n\n', fieldArr, 'field\n\n\n', field, 'direciton\n\n', direction)
-    }
+ 
     return {
       order:  [
         [field, direction === '+' ? 'ASC' : 'DESC']
