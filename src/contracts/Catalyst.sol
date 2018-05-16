@@ -11,6 +11,12 @@ contract Question {
     // by default questions will be open for one day
     uint duration = 1 days;
     uint endTime = uint32(now + duration);
+    // how much the quesiton is worth.  Data type should be?
+    uint bounty;
+
+    bool ended;
+
+    event QuestionEnded(address winner, uint amount);
 
     // the Anwer struct stores information about individual answers submitted. 
     struct Answer {
@@ -23,20 +29,71 @@ contract Question {
         uint16 downvotes;
     }
 
+    // a structure representing a vote
+    struct Vote 
+
     // we want to store the answers in an array
     Answer[] public answers;
+    
+    // find sthe best answer.  Best practice for modifiers?
+    function _bestAnswer() private returns (address) {
+      
+    }
+
+    // allows a user to submit a new answer at a cost that will be added to the bounty
+    function newAnswer(address answerOwner) public {
+
+    }
+
+    // allows users to upvote the answer at a cost
+    function upvote(address voteOwner) public {
+
+    }
+
+    // allows users to downvote the answer at a cost
+    function downvote(address voteOwner) public {
+      
+    }
+
+    // allows both the questionAsker and anybody else to increase bounty
+    function increaseBounty() public {
+
+    }
+
+    // allows the question answer or us to extend the deadline of the question
+    function extendEndTime() public {
+
+    }
 
     function questionEnd() public {
         // conditions
+        // security problem with using now?
         require(now >= endTime);
+        
         // effects
+        ended = true;
+        emit QuestionEnded(_bestAnswer(), bounty);
 
         // interactions
+        // transfer the amount to the best answer
+        _bestAnswer().transfer(bounty);
     }
+    
+    /*
+     *
+     *
+     *
+     * everything below is what gives us ownership of the contract and could be moved to a seperate contract
+     * and instead inhereted 
+     * this is our address and unique to us
+     *
+     *
+     *
+     *
+     *
+     */
 
-    // everything below is what gives us ownership of the contract and could be moved to a seperate contract
-    // and instead inhereted 
-    // this is our address and unique to us
+    // note we are the owner not the actual person who posted the question
     address public owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
