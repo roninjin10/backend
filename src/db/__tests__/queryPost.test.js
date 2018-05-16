@@ -16,7 +16,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by id', async (done) => {
     const query = await queryPost({
-      id: 1,      
+      id: 1,     
+      limitBy: 'all', 
     });
     expect(query.length).toBe(1);
 
@@ -29,7 +30,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by PostId', async (done) => {
     const query = await queryPost({
-      PostId: 1
+      PostId: 1,
+      limitBy: 'all'
     });
 
     expect (query.length > 0).toBeTruthy();
@@ -43,7 +45,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by UserId', async (done) => {
     const query = await queryPost({
-      UserId: 1,      
+      UserId: 1,  
+      limitBy: 'all',    
     });
 
     expect(query.length > 0).toBeTruthy();
@@ -57,7 +60,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by title', async (done) => {
     const query = await queryPost({
-      title: 'i am title 1'      
+      title: 'i am title 1',
+      limitBy: 'all',  
     });
 
     expect(query.length > 1).toBeTruthy();
@@ -67,7 +71,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by PostTypeId', async (done) => {
     const query = await queryPost({
-      PostTypeId: 1      
+      PostTypeId: 1,
+      limitBy: 'all',  
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -77,7 +82,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
     }
 
     const query2 = await queryPost({
-      PostTypeId: 2
+      PostTypeId: 2,
+      limitBy: 'all',
     });
 
     expect(query2.length > 0).toBeTruthy();
@@ -91,7 +97,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
   test('should be able to filter by isTopAnswer', async (done) => {
     const query = await queryPost({
-      isTopAnswer: false      
+      isTopAnswer: false,
+      limitBy: 'all',     
     });
    
     expect(query.length > 0).toBeTruthy();
@@ -115,7 +122,8 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
 test('should be able to sort by viewCount forwards and backwards', async (done) => {
     const query = await queryPost({
-      sortBy: '+viewCount'
+      sortBy: '+viewCount',
+      limitBy: 'all'
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -128,7 +136,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-viewCount'
+      sortBy: '-viewCount',
+      limitBy: 'all',
     });
 
     expect(query2.length > 0).toBeTruthy();
@@ -144,7 +153,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
   test('should be able to sort by answerCount', async (done) => {
     const query = await queryPost({
-      sortBy: '+answerCount'
+      sortBy: '+answerCount',
+      limitBy: 'all'
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -157,7 +167,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-answerCount'
+      sortBy: '-answerCount',
+      limitBy: 'all'
     });
 
     expect(query2.length > 0).toBeTruthy();
@@ -173,7 +184,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
   test('should be able to sort by favoriteCount', async (done) => {
     const query = await queryPost({
-      sortBy: '+favoriteCount'
+      sortBy: '+favoriteCount',
+      limitBy: 'all',
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -186,7 +198,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-favoriteCount'
+      sortBy: '-favoriteCount',
+      limitBy: 'all',
     });
 
     expect(query2.length > 0).toBeTruthy();
@@ -202,7 +215,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
   test('should be able to sort by upvoteCount', async (done) => {
     const query = await queryPost({
-      sortBy: '+upvoteCount'
+      sortBy: '+upvoteCount',
+      limitBy: 'all',
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -215,7 +229,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-upvoteCount'
+      sortBy: '-upvoteCount',
+      limitBy: 'all',
     });
 
     expect(query2.length > 0).toBeTruthy();
@@ -230,8 +245,10 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
   });
 
   test('should be able to sort by createdAt', async (done) => {
+    debugger;
     const query = await queryPost({
-      sortBy: '+createdAt'
+      sortBy: '+createdAt',
+      limitBy: 'all'
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -244,10 +261,11 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-createdAt'
+      sortBy: '-createdAt',
+      limitBy: 'all'
     });
     expect(query2.length > 0).toBeTruthy();
-
+    
     lastViewCount = query2[0].createdAt;
 
     for (const post of query2) {
@@ -260,7 +278,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
   test('should be able to sort by closedDate', async (done) => {
     const query = await queryPost({
-      sortBy: '+closedDate'
+      sortBy: '+closedDate',
+      limitBy: 'all',
     });
     
     expect(query.length > 0).toBeTruthy();
@@ -273,7 +292,8 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     }
 
     const query2 = await queryPost({
-      sortBy: '-closedDate'
+      sortBy: '-closedDate',
+      limitBy: 'all',
     });
 
     expect(query2.length > 0).toBeTruthy();
