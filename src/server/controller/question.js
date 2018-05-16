@@ -1,7 +1,7 @@
 import { postsByType, postById, newPost } from './post'
 import db from '../../db/models'
 
-Post = db.Post;
+const Post = db.Post;
 
 const TYPE = 'Question';
 
@@ -17,7 +17,7 @@ question.get.questions.all = postsByType(TYPE);
 
 question.post.question = newPost(TYPE);
 
-question.get.question = async (res, res) => {
+question.get.question = async (req, res) => {
   const id = res.params.id
   try {
     const question = await Post.getPostById(id);
