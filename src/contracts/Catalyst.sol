@@ -6,6 +6,9 @@ pragma solidity ^0.4.23;
 // at a certain time the votes should end and the payout should be payed out to the questions address
 // Should there be a different contract for each contract?  Don't know the overhead with making contracts
 
+
+// so many bad practices
+
 contract Question {
   
     // by default questions will be open for one day
@@ -22,6 +25,7 @@ contract Question {
     // the Anwer struct stores information about individual answers submitted. 
     struct Answer {
         // the address the payout will go to should this answer win
+        uint stake;
         address answerOwner;
         // how many upvotes and downvotes a question has
         uint16 upvotes;
@@ -34,41 +38,54 @@ contract Question {
         address voteOwner;
         // id of the answer they voted for
         uint16 id;
-        // might need more
+        // true or false depending on if it's an upvote or not
+        bool upvote;
     }
 
     // we want to store the answers in an array
     Answer[] public answers;
+    Vote[] public votes;
+
+    function voteScore(Answer _answer) private returns (uint) {
+        return _answer.upvotes - _answer.downvotes;
+    }
     
     // find sthe best answer.  Best practice for modifiers?
-    function _bestAnswer() private returns (address) {
-      
+    function _bestAnswer() private returns (Answer) {
+        Answer best = answers[0];
+        for (uint i = 0; i < answers.length; i++) {
+            if(voteScore(answers[i]) > voteScore(best)) {
+                best = answers[i];
+            }
+        }
+        return best;
     }
 
     // allows a user to submit a new answer at a cost that will be added to the bounty
-    function newAnswer(address answerOwner) public {
-
+    function newAnswer(address answerOwner) public payable onlyOwnerBy {
+        answers.push(Answer(msg.value, msg.sender, 0, 0));
+        bounty = bounty + msg.value;
     }
 
     // allows users to upvote the answer at a cost
-    function upvote(address voteOwner) public {
-
+    function upvote(address voteOwner) public onlyOwnerBy {
+        
     }
 
     // allows users to downvote the answer at a cost
-    function downvote(address voteOwner) public {
+    function downvote(address voteOwner) public onlyOwnerBy {
       
     }
 
     // allows both the questionAsker and anybody else to increase bounty
-    // takes form of a downvote on the site
-    function increaseBounty() public {
-
+    // takes form of a upvote on the site
+    function increaseBounty() public payable onlyOwnerBy {
+        bounty = bounty + msg.value;
     }
 
     // allows the question answer or us to extend the deadline of the question
-    function extendEndTime() public {
-
+    function extendEndTime() public onlyOwnerBy {
+        
     }
 
     // pays out people who upvoted the best answer
@@ -76,7 +93,7 @@ contract Question {
 
     }
 
-    function questionEnd() public {
+    function questionEnd() public onlyOwnerBy {
         // conditions
         // security problem with using now?
         require(now >= endTime);
@@ -88,7 +105,7 @@ contract Question {
         // interactions
         // transfer the amount to the best answer
         address _winner = _bestAnswer();
-        winner.transfer(bounty / 2);
+        _winner.transfer(bounty / 2);
         _payoutUpvotes();
     }
     
@@ -112,6 +129,15 @@ contract Question {
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     // this modifier makes it so some functions can only be called by us
+    modifier onlyOwnerBy() {
+        require(msg.sender == owner);
+        require(
+            ended != true,
+            "Question is closed."
+        );
+        _;
+    }
+
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
