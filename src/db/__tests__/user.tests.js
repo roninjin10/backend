@@ -163,7 +163,7 @@ describe('Test VerifyLogin', () => {
     })
   })
 
-  test('correct login info should return the user', (done) => {
+  test('correct signin info should return the user', (done) => {
     verifyLogin(username, password)
     .then(user => {
       expect(user.username).toBe(username);
