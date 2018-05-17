@@ -13,7 +13,7 @@ controller.post.signup = (req, res) => {
     .then(() => {
       req.login(req.body, (err) => {
         if (err) {
-          log.info('there was an error in automatic login', err);
+          log.info('there was an error in automatic signin', err);
           return res.status(401).send('User created but problem logging in');
         }
         return res.redirect('/');
@@ -31,7 +31,7 @@ controller.post.logout = (req, res) => {
   res.redirect('/');
 }
 
-controller.post.login = (req, res) => {
+controller.post.signin = (req, res) => {
   
   passport.authenticate('local', (err, user, info) => {
     
