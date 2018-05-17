@@ -20,8 +20,7 @@ controller.post.signup = (req, res) => {
       })
     })
     .catch((err) => {
-      log.error('error processing sign up', err);
-      res.status(401).send('There was a problem processing signup');
+      res.status(401).send(err.errors[0].message);
     });
 };
 
@@ -36,8 +35,11 @@ controller.post.signin = (req, res) => {
   passport.authenticate('local', (err, user, info) => {
     
     if (err || !user) {
-      log.info('there was an error authenticating user', err)
-      return res.status(422).send(info);
+      log.info('there was an error authenticating user', err, 'info', info);
+      return res.status(422).send(!user 
+        ? 'username does not exist'
+        : 'password is incorrect'
+      );
     }
     
     user = user.dataValues;
