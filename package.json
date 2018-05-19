@@ -18,7 +18,7 @@
     "start": "node dist/server/index.js",
     "dev": "nodemon src/server/index.js --exec \"node -r dotenv/config -r babel-register\"",
     "clean": "rimraf dist",
-    "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist && sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
+    "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest",
     "lint": "esw -w src test"
   },
