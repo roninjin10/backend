@@ -21,12 +21,12 @@ let scrapedFiles = 0;
 
 let name = 'will'
 
-let start = 1480550400 + 1500000;
-if (eric || kyle) {
+let start = 1480550400;
+if (eric) {
   start += 500000;
-  name = 'kyle'
+  name = 'eric'
 } else if (kyle) {
-  start += 500000;
+  start += 1000000;
   name = 'kyle'
 }
 
@@ -93,3 +93,4 @@ const scrapeStackOverflow = async () => {
 }
 
 setInterval(() => scrapeStackOverflow().catch(err => log.info(err)), 5000);
+
