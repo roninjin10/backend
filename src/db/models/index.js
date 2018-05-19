@@ -11,7 +11,8 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize({
     url: process.env.DATABASE_URL, 
-    dialect: 'postgres'
+    dialect: 'postgres',
+    ssl: true,
   });
 } else {
   sequelize = new Sequelize(
