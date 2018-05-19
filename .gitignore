@@ -3,7 +3,6 @@
 
 src/server/utils/fakeStackOverflowData
 
-src/db/config/config.json
 
 # Logs
 logs
