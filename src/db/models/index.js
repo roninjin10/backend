@@ -30,7 +30,7 @@ let config = {
 if (config.use_env_variable) {
   sequelize = new Sequelize(/*process.env[config.use_env_variable], */{
     ...config,
-    url: process.env[config.use_env_variable],
+    url: `postgres://psujmmqgzgpfgo:0b5962328e2ccef022bf1759be702e1d7f58e132416d72524b9b7bd4cbe34f6c@ec2-54-243-54-6.compute-1.amazonaws.com:5432/dbiff713ut8it3` //process.env[config.use_env_variable],
   });
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
