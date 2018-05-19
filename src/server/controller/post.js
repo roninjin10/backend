@@ -30,14 +30,14 @@ export const postById = (postType) => (req, res) =>
   })
   .catch((err) => res.status(404).json(err));
 
-export const newPost  = (postType) => (req, res) => {
-  const { UserId, title, body, PostTypeId, PostId, type } = req.body;
+export const newPost  = (/*postType*/) => (req, res) => {
+  const { UserId, title, body, PostTypeId, PostId } = req.body;
 
-  if (type !== postType) {
-    throw PostTypeError(postType, type);
-  }
-  return Post.createNewPost({UserId, title, body, PostTypeId, PostId, type})
-  .then(() => res.status(201).send('post successful'))
+  return Post.createNewPost({UserId, title, body, PostTypeId, PostId})
+  .then(() => res.status(201).send({
+    message: 'post successful',
+    post: { UserId, title, body, PostTypeId, PostId }
+  }))
   .catch((err) => res.status(401).json({
       message: 'there was an error posting question',
       err: err

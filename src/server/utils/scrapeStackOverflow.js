@@ -48,7 +48,7 @@ const calculateNewStartDate = (json, type) => {
 };
 
 const scrapeStackOverflow = async () => {
-  
+
   let type;
   log.info('starting new loop...')
   log.info('scraped files', scrapedFiles);
@@ -62,7 +62,7 @@ const scrapeStackOverflow = async () => {
     fromDate = answerFrom;
     type = ANSWER;
   }
-  
+
   log.info('fromDate', fromDate, 'type', type)
   log.info('starting query...');
 
@@ -75,7 +75,7 @@ const scrapeStackOverflow = async () => {
     log.info('got new data', json.data);
     json = JSON.stringify(json.data.items);
   } catch(err) {
-    return log.info('\n\n\nerror on axios request', '\n\n\ntype', type, '\n\n\nfromDate', fromDate, '\n\n\nerr: ', err); 
+    return log.info('\n\n\nerror on axios request', '\n\n\ntype', type, '\n\n\nfromDate', fromDate, '\n\n\nerr: ', err);
   }
 
   log.info('calculating new start date...');
@@ -83,7 +83,7 @@ const scrapeStackOverflow = async () => {
 
   log.info('writing data to disk...');
   try {
-    fs.writeFileSync(`./src/server/utils/fakeStackOverflowData/${type}${scrapedFiles}${name}.json`, json);
+    fs.writeFileSync(`./src/server/utils/fakeStackOverflowData/${type}2${scrapedFiles}${name}.json`, json);
   } catch(err) {
     log.info('error writing file', err);
     return;
@@ -91,5 +91,6 @@ const scrapeStackOverflow = async () => {
   log.info('new json written!');
   scrapedFiles++;
 }
-  
+
 setInterval(() => scrapeStackOverflow().catch(err => log.info(err)), 5000);
+

@@ -1,5 +1,6 @@
 import db from '../models'
 
+const Op = db.Sequelize.Op;
 /*
  * not case sensitive though
  * 
@@ -91,6 +92,19 @@ const sortParams = [
 const parseFilterParams = (queryParams) => ({
   where: filterParams.reduce((a, e) => {
     if (e in queryParams) {
+      if (e === 'PostId') {
+          return {
+            [Op.or]: [
+              {
+                id: queryParams[e]
+              },
+              {
+                PostId: queryParams[e]
+              }
+            ]
+          }
+      }
+      
       return {
         ...a,
         [e]: queryParams[e],

@@ -28,7 +28,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
     done();
   });
 
-  test('should be able to filter by PostId', async (done) => {
+  test('should return both question and it\'s corresponding answers', async (done) => {
     const query = await queryPost({
       PostId: 1,
       limitBy: 'all'
@@ -36,9 +36,16 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
     expect (query.length > 0).toBeTruthy();
 
+    let existsQuestion = false;
     for (const post of query) {
-      expect(post.PostId).toBe(1);
+      if (post.id !== 1) {
+        expect(post.PostId).toBe(1);
+      } else {
+        existsQuestion = true;
+      }
     } 
+
+    expect(existsQuestion).toBeTruthy();
 
     done();
   });

@@ -9,6 +9,7 @@ const router = Router();
 
 router.get('/', (req, res) => res.json('Brandon Can\'t hang'));
 
+router.get('/user', user.get.checkSignin);
 router.post('/user/signup', user.post.signup);
 router.post('/user/signin', user.post.signin);
 router.post('/user/signout', user.post.logout);

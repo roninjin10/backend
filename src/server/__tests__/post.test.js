@@ -16,6 +16,7 @@ const fakeQuestion = {
   UserId: 1,
   title: 'Title',
   body: 'This is the body',
+  PostTypeId: 1,
   type: 'Question',
   PostId: null
 };
@@ -24,7 +25,7 @@ const fakeAnswer = {
   UserId: 2,
   title: 'Title',
   body: 'this is the body of an answer',
-  type: 'Answer',
+  PostTypeId: 2,
   PostId: 1
 };
 

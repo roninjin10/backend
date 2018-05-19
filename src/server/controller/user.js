@@ -6,7 +6,17 @@ const User = db.User
 
 let controller = {
   post: {},
+  get: {},
 };
+
+controller.get.checkSignin = (req, res) => {
+  console.log('req.user', req.user);
+  if (req.user) {
+    res.status(200).json('user signed in');
+  } else {
+    res.status(404).json('user not signed in');
+  }
+}
 
 controller.post.signup = (req, res) => {
   return User.createUser(req.body)
@@ -20,8 +30,7 @@ controller.post.signup = (req, res) => {
       })
     })
     .catch((err) => {
-      log.error('error processing sign up', err);
-      res.status(401).send('There was a problem processing signup');
+      res.status(401).send(err.errors[0].message);
     });
 };
 
@@ -31,19 +40,22 @@ controller.post.logout = (req, res) => {
   res.redirect('/');
 }
 
-controller.post.signin = (req, res) => {
+controller.post.signin = (req, res, next) => {
   
   passport.authenticate('local', (err, user, info) => {
     
     if (err || !user) {
-      log.info('there was an error authenticating user', err)
-      return res.status(422).send(info);
+      log.info('there was an error authenticating user', err, 'info', info);
+      return res.status(422).send(!user 
+        ? 'username does not exist'
+        : 'password is incorrect'
+      );
     }
     
     user = user.dataValues;
 
-    delete user.password;
-    delete user.salt;
+    user.password = undefined;
+    user.salt = undefined;
 
     req.login(user, (err) => {
       if (err) {
@@ -52,7 +64,7 @@ controller.post.signin = (req, res) => {
       }
       return res.json(user);
     })
-  })(req, res)
+  })(req, res, next)
 }
 
 export default controller
