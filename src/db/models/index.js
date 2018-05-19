@@ -8,8 +8,29 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable]);
+if (process.env.DATABASE_URL) {
+
+  const match = process.env.DATABASE_URL.match(
+    /postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/
+  );
+            
+  const config = {
+    user: match[1],
+    pass: match[2],
+    base: match[5],
+    options: {
+      dialect: 'postgres',
+      protocol: 'postgres',
+      host: match[3],
+      logging: false,
+      port: match[4],
+      dialectOptions: {
+        ssl: true
+      }
+    }
+  };
+
+  sequelize = new Sequelize(config.base, config.user, config.pass, config.options);
 } else {
   sequelize = new Sequelize(
     config.database, config.username, config.password, config
