@@ -1,7 +1,9 @@
 {
   "name": "backend",
   "description": "review app for backend",
-  "scripts": {},
+  "scripts": {
+    "postdeploy": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
+  },
   "env": {},
   "formation": {
     "web": {
