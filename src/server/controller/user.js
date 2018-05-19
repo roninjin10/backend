@@ -6,7 +6,17 @@ const User = db.User
 
 let controller = {
   post: {},
+  get: {},
 };
+
+controller.get.checkSignin = (req, res) => {
+  console.log('req.user', req.user);
+  if (req.user) {
+    res.status(200).json('user signed in');
+  } else {
+    res.status(404).json('user not signed in');
+  }
+}
 
 controller.post.signup = (req, res) => {
   return User.createUser(req.body)
@@ -30,7 +40,7 @@ controller.post.logout = (req, res) => {
   res.redirect('/');
 }
 
-controller.post.signin = (req, res) => {
+controller.post.signin = (req, res, next) => {
   
   passport.authenticate('local', (err, user, info) => {
     
@@ -44,8 +54,8 @@ controller.post.signin = (req, res) => {
     
     user = user.dataValues;
 
-    delete user.password;
-    delete user.salt;
+    user.password = undefined;
+    user.salt = undefined;
 
     req.login(user, (err) => {
       if (err) {
@@ -54,7 +64,7 @@ controller.post.signin = (req, res) => {
       }
       return res.json(user);
     })
-  })(req, res)
+  })(req, res, next)
 }
 
 export default controller
