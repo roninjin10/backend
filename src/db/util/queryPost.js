@@ -154,28 +154,46 @@ const parseLimitParams = (queryParams) => {
     };
   }
   return {limit: 50};
-}
+};
 
 const parseIncludeParams = (queryParams) => {
+  let out = [
+    {
+      model: db.User,
+      as: 'User',
+      attributes: ['id', 'username'],
+    },
+    {
+      model: db.PostType,
+      as: 'PostType',
+      attributes: ['id', 'name'],
+    },
+    db.Tag,
+    db.Vote,
+  ];
+
   if (includeParams[0] in queryParams) {
     const username = queryParams['username'];
-    return {
-      include: {
-        model: db.User,
-        where: {
-          username,
-        }
+    return {include: [{
+      model: db.User,
+      attributes: ['id', 'username'],
+      through: {
+        attributes: [''],
+      },
+      where: {
+        username,
       }
-    }
+    }]};
   }
-  return {};
-}
+  return {include: out};
+};
 
 const createQuery = (queryParams) => {
-  const where = parseFilterParams(queryParams);
+  const where = parseFilterParams(queryParams)
   const sort = parseSortParams(queryParams);
   const limit = parseLimitParams(queryParams);
-  const include = parseIncludeParams(queryParams);
+  const include = parseIncludeParams(queryParams)
+  
 
   return {...where, ...sort, ...limit, ...include};
 };
