@@ -33,13 +33,11 @@ const fakeAnswer = {
 class Res {
   status(status) {
     this.statuscode = status;
-    console.log('status sent:', status);
     return this;
   }
 
   send(message) {
     this.sentMessage = message;
-    // console.log('new message', message);
     return this;
   }
 
@@ -115,7 +113,6 @@ describe('get requests should return 200s', () => {
     const res = new Res();
 
     await postById(1)(req, res);
-    console.log(res.message);
     expect(res.statuscode).toBe(200);
 
     done();
