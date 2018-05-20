@@ -59,6 +59,10 @@ export default (sequelize, DataTypes) => {
     closedDate: {
       allowNull: true,
       type: DataTypes.DATE
+    },
+    bounty: {
+      defaultValue: 0,
+      type: DataTypes.INTEGER
     }
   });
   
@@ -161,6 +165,12 @@ export default (sequelize, DataTypes) => {
     closedDate: DataTypes.fn('NOW'),
     isTopAnswer
   });
+
+  Post.incBounty = (id, amount) => Post.increment('bounty', {
+    by: amount,
+    where: {id},
+  })
+    
 
   return Post;
 

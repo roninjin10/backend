@@ -72,6 +72,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')
+      },
+      bounty: {
+        defaultValue: 0,
+        type: Sequelize.INTEGER
       }
     });
   },
