@@ -4,7 +4,7 @@
 src/server/utils/fakeStackOverflowData
 
 
-src/search/config/config.json
+src/search/config/
 
 # Logs
 logs
