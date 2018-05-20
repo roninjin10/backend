@@ -4,6 +4,8 @@
 src/server/utils/fakeStackOverflowData
 
 
+src/search/config/config.json
+
 # Logs
 logs
 *.log
@@ -66,3 +68,5 @@ typings/
 # Custom
 .idea
 dist
+
+#
