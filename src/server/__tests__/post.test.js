@@ -18,7 +18,8 @@ const fakeQuestion = {
   body: 'This is the body',
   PostTypeId: 1,
   type: 'Question',
-  PostId: null
+  PostId: null,
+  bounty: 0.1
 };
 
 const fakeAnswer = {
@@ -26,7 +27,7 @@ const fakeAnswer = {
   title: 'Title',
   body: 'this is the body of an answer',
   PostTypeId: 2,
-  PostId: 1
+  PostId: 1,
 };
 
 class Res {

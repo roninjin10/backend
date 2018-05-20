@@ -62,7 +62,7 @@ export default (sequelize, DataTypes) => {
     },
     bounty: {
       defaultValue: 0,
-      type: DataTypes.INTEGER
+      type: DataTypes.FLOAT,
     }
   });
   
@@ -100,7 +100,7 @@ export default (sequelize, DataTypes) => {
     3: 3
   };
 
-  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId}) => {
+  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId, bounty}) => {
     PostTypeId = PostTypeId || typeToId[type];
 
     await Post.create({
@@ -108,7 +108,8 @@ export default (sequelize, DataTypes) => {
       title,
       body,
       PostTypeId,
-      PostId
+      PostId,
+      bounty,
     });
 
     if (PostId) {

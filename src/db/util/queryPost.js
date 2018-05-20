@@ -28,6 +28,7 @@ const camelCase = {
   'closeddate': 'closedDate',
   'limitby': 'limitBy',
   'sortby': 'sortBy',
+  'bounty': 'bounty',
   // sort params
   '+viewcount': '+viewCount',
   '+answercount': '+answerCount',
@@ -70,6 +71,7 @@ const sortParams = [
   'upvoteCount',
   'createdAt',
   'closedDate',
+  'bounty',
 ];
 
 const includeParams = [

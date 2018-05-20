@@ -314,6 +314,22 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     done();
   });
 
+  test('should be able to sort by bounty', async (done) => {
+    const query = await queryPost({
+      sortBy: '-bounty',
+      limitBy: 'all',
+      PostTypeId: 1,
+    });
+    expect(query.length > 0).toBeTruthy();
+
+    let lastBounty = query[0].bounty;
+    for (const post of query) {
+      expect(post.bounty <= lastBounty).toBeTruthy();
+      lastBounty = post.bounty;
+    }
+    done();
+  })
+
   test('should be be able to limit the number of posts returned', async (done) => {
     const query = await queryPost({
       limitBy: 3

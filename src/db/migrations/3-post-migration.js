@@ -75,7 +75,7 @@ module.exports = {
       },
       bounty: {
         defaultValue: 0,
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       }
     });
   },
