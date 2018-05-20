@@ -72,7 +72,6 @@ describe('test getPostsByType', () => {
     const lengthBefore = posts.length;
 
     await Post.createNewPost({...post, PostTypeId: 2});
-    console.log(lengthBefore);    
     posts = await Post.getPostsByType(1);
 
     expect(posts.length).toBe(lengthBefore);
