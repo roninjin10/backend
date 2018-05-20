@@ -18,7 +18,8 @@ const fakeQuestion = {
   body: 'This is the body',
   PostTypeId: 1,
   type: 'Question',
-  PostId: null
+  PostId: null,
+  bounty: 0.1
 };
 
 const fakeAnswer = {
@@ -26,19 +27,17 @@ const fakeAnswer = {
   title: 'Title',
   body: 'this is the body of an answer',
   PostTypeId: 2,
-  PostId: 1
+  PostId: 1,
 };
 
 class Res {
   status(status) {
     this.statuscode = status;
-    console.log('status sent:', status);
     return this;
   }
 
   send(message) {
     this.sentMessage = message;
-    // console.log('new message', message);
     return this;
   }
 
@@ -114,7 +113,6 @@ describe('get requests should return 200s', () => {
     const res = new Res();
 
     await postById(1)(req, res);
-    console.log(res.message);
     expect(res.statuscode).toBe(200);
 
     done();

@@ -15,6 +15,7 @@ const camelCase = {
   'id': 'id',
   'postid': 'PostId',
   'userid': 'UserId',
+  'username': 'username',
   'title': 'title',
   'posttypeid': 'PostTypeId',
   'istopanswer': 'isTopAnswer',
@@ -27,6 +28,7 @@ const camelCase = {
   'closeddate': 'closedDate',
   'limitby': 'limitBy',
   'sortby': 'sortBy',
+  'bounty': 'bounty',
   // sort params
   '+viewcount': '+viewCount',
   '+answercount': '+answerCount',
@@ -69,7 +71,12 @@ const sortParams = [
   'upvoteCount',
   'createdAt',
   'closedDate',
+  'bounty',
 ];
+
+const includeParams = [
+  'username',
+]
 
 /*
  * Examples of how to use other params:
@@ -93,16 +100,17 @@ const parseFilterParams = (queryParams) => ({
   where: filterParams.reduce((a, e) => {
     if (e in queryParams) {
       if (e === 'PostId') {
-          return {
-            [Op.or]: [
-              {
-                id: queryParams[e]
-              },
-              {
-                PostId: queryParams[e]
-              }
-            ]
-          }
+        return {
+          ...a,
+          [Op.or]: [
+            {
+              id: queryParams[e]
+            },
+            {
+              PostId: queryParams[e]
+            }
+          ]
+        }
       }
       
       return {
@@ -146,14 +154,48 @@ const parseLimitParams = (queryParams) => {
     };
   }
   return {limit: 50};
-}
+};
+
+const parseIncludeParams = (queryParams) => {
+  let out = [
+    {
+      model: db.User,
+      as: 'User',
+      attributes: ['id', 'username'],
+    },
+    {
+      model: db.PostType,
+      as: 'PostType',
+      attributes: ['id', 'name'],
+    },
+    db.Tag,
+    db.Vote,
+  ];
+
+  if (includeParams[0] in queryParams) {
+    const username = queryParams['username'];
+    return {include: [{
+      model: db.User,
+      attributes: ['id', 'username'],
+      through: {
+        attributes: [''],
+      },
+      where: {
+        username,
+      }
+    }]};
+  }
+  return {include: out};
+};
 
 const createQuery = (queryParams) => {
-  const where = parseFilterParams(queryParams);
+  const where = parseFilterParams(queryParams)
   const sort = parseSortParams(queryParams);
   const limit = parseLimitParams(queryParams);
+  const include = parseIncludeParams(queryParams)
+  
 
-  return {...where, ...sort, ...limit};
+  return {...where, ...sort, ...limit, ...include};
 };
 
 const camelParams = (queryParams) => {
@@ -197,23 +239,3 @@ const queryPost = (queryParams) => {
 export { db } 
 export default queryPost
 
-/*
-
-
-we want to be able to sort by views
-
-we want to be able to sort by comments
-
-we want to be able to sort by favorites
-
-we want to be able to sort by upvotes
-
-we want to be able to sort by date posted
-
-we want to be able to sort by date question closed
-
-we want to be able to filter by tag
-
-we want username, tagname, questionname and other identification not just the id number on our queries.
-
-*/

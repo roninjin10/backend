@@ -11,11 +11,13 @@ const UserId = 1;
 const title = 'title';
 const body = 'body';
 const type = 1;
+const bounty = .01;
 
 const post = {
   UserId,
   title,
   body,
+  bounty,
 };
 
 describe('test createNewPost and getPOstsByQuery', () => {

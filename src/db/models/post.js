@@ -59,6 +59,10 @@ export default (sequelize, DataTypes) => {
     closedDate: {
       allowNull: true,
       type: DataTypes.DATE
+    },
+    bounty: {
+      defaultValue: 0,
+      type: DataTypes.FLOAT,
     }
   });
   
@@ -96,7 +100,7 @@ export default (sequelize, DataTypes) => {
     3: 3
   };
 
-  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId}) => {
+  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId, bounty}) => {
     PostTypeId = PostTypeId || typeToId[type];
 
     await Post.create({
@@ -104,7 +108,8 @@ export default (sequelize, DataTypes) => {
       title,
       body,
       PostTypeId,
-      PostId
+      PostId,
+      bounty,
     });
 
     if (PostId) {
@@ -161,6 +166,12 @@ export default (sequelize, DataTypes) => {
     closedDate: DataTypes.fn('NOW'),
     isTopAnswer
   });
+
+  Post.incBounty = (id, amount) => Post.increment('bounty', {
+    by: amount,
+    where: {id},
+  })
+    
 
   return Post;
 

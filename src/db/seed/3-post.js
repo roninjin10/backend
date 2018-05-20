@@ -56,7 +56,8 @@ for (let user = 1; user < 101; user++) {
       UserId: user,
       title: title[i],
       body: questionBodys[i],
-      PostTypeId: 1
+      PostTypeId: 1,
+      bounty: Math.random(),
     });
   }
 }
