@@ -2,7 +2,7 @@ import elasticsearch from 'elasticsearch'
 import domain from './config/config'
 
 const client = new elasticsearch.Client({
-  host: domain,
+  host: 'localhost:9200',
   log: 'trace'
 });
 
@@ -15,3 +15,5 @@ client.ping({
     console.log('All is well');
   }
 });
+
+export default client;
