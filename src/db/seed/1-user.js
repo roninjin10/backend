@@ -1,5 +1,4 @@
-'use strict';
-const userData = [
+let userData = [
   {
     username: "kyle",
     password: "kyle",
@@ -36,19 +35,17 @@ const userData = [
     email: "email@email.com"
   }
 ];
-const bcrypt = require('bcrypt');
 
-module.exports = {
-  
-  up: (queryInterface, Sequelize) => {
-    for(const user of userData) {
-      user.password = bcrypt.hashSync(user.password, 8);
-    }
-    
-    return queryInterface.bulkInsert('Users', userData, {});
-  },
+let out = []
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Users', null, {});
-  }
-};
+for (let i = 1; i < 101; i++) {
+  out.push({
+    username: 'user' + i,
+    password: 'user' + i,
+    email: 'email' + i + '@email.com'
+  })
+}
+
+userData = out.concat(userData);
+
+module.exports = userData;

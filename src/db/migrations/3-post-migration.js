@@ -28,11 +28,11 @@ module.exports = {
         allowNull: true,
       },
       body: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      type: {
-        type: Sequelize.STRING,
+      PostTypeId: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       viewCount: {
@@ -43,13 +43,9 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER
       },
-      createdAt: {
-        allowNull: true,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+      isTopAnswer: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
       },
       commentCount: {
         defaultValue: 0,
@@ -59,13 +55,31 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER
       },
-      closedDate: {
+      upvoteCount: {
         defaultValue: 0,
+        type: Sequelize.INTEGER
+      },
+      closedDate: {
+        allowNull: true,
         type: Sequelize.DATE
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
+      },
+      bounty: {
+        defaultValue: 0,
+        type: Sequelize.FLOAT
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface, /*Sequelize*/) => {
     return queryInterface.dropTable('Posts');
   }
 };

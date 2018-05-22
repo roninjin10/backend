@@ -8,12 +8,11 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 const db = {};
 
 let sequelize;
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
-  sequelize = new Sequelize(
-    config.database, config.username, config.password, config
-  );
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
 fs
@@ -35,5 +34,7 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+// db.sequelize.sync({force: false});
 
 export default db
