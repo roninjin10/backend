@@ -10,7 +10,6 @@ let controller = {
 };
 
 controller.get.checkSignin = (req, res) => {
-  console.log('req.user', req.user);
   if (req.user) {
     res.status(200).json('user signed in');
   } else {
@@ -40,7 +39,7 @@ controller.post.logout = (req, res) => {
   res.redirect('/');
 }
 
-controller.post.signin = (req, res, next) => {
+controller.post.signin = (req, res) => {
   
   passport.authenticate('local', (err, user, info) => {
     
@@ -64,7 +63,13 @@ controller.post.signin = (req, res, next) => {
       }
       return res.json(user);
     })
-  })(req, res, next)
+  })(req, res);
+
+  controller.get.all = (req, res) => {
+    User.getAllUsers()
+    .then((allUsers) => res.status(200).json(allUsers))
+    .catch((err) => res.status(400).json(err));
+  }
 }
 
 export default controller

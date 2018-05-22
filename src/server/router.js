@@ -14,6 +14,7 @@ router.get('/user', user.get.checkSignin);
 router.post('/user/signup', user.post.signup);
 router.post('/user/signin', user.post.signin);
 router.post('/user/signout', user.post.logout);
+router.get('/user/all', user.get.all);
 
 // documentation in db/util/queryPost
 router.get('/post', queryPostController);

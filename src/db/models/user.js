@@ -82,5 +82,9 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   });
 
+  User.getAllPosts = () => User.findAll({
+    include: [{all: true}]
+  })
+
   return User;
 };
