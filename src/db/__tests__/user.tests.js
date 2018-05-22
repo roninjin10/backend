@@ -114,7 +114,8 @@ describe('Test getUser', () => {
       expect(user.email).toBe(email)
       done()
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log('\n\nerr\n\n', err);
       expect(false).toBeTruthy()
       done()
     })

@@ -34,11 +34,10 @@ class Res {
   }
 }
 
-test('should return a 200 with a good query', async (done) => {
+test('should return a 200 with a good query', async () => {
   const res = new Res();
   await queryPostController(req, res);
 
-  expect(res.statuscode).toBe(200);
+  return expect(res.statuscode).toBe(200);
 
-  done()
 });

@@ -9,7 +9,7 @@ import {
 
 afterAll(async (done) => {
   await db.sequelize.close();
-  done();
+  return done();
 });
 
 const fakeQuestion = {
@@ -56,7 +56,7 @@ describe('newPost function from controller/post.js', () => {
 
     await newQuestion(req, res);
 
-    expect(res.statuscode).toBe(201);
+    return expect(res.statuscode).toBe(201);
   });
 
   test('should create a newAnswer', async (done) => {
@@ -65,7 +65,7 @@ describe('newPost function from controller/post.js', () => {
 
     await newAnswer(req, res);
     expect(res.statuscode).toBe(201);
-    done();
+    return done();
   })
 });
 
@@ -77,7 +77,7 @@ describe('get requests should return 200s', () => {
     await allPosts(req, res);
     expect(res.statuscode).toBe(200);
   
-    done();
+    return done();
   })
 
   test('byQuery should return a 200', async (done) => {
@@ -90,7 +90,7 @@ describe('get requests should return 200s', () => {
 
     expect(res.statuscode).toBe(200);
 
-    done();
+    return done();
   })
 
   test('postsByType should return a 200', async (done) => {
@@ -103,7 +103,7 @@ describe('get requests should return 200s', () => {
 
     expect(res.statuscode).toBe(200);
 
-    done();
+    return done();
   });
 
   test('postById should return a 200', async (done) => {
@@ -115,6 +115,6 @@ describe('get requests should return 200s', () => {
     await postById(1)(req, res);
     expect(res.statuscode).toBe(200);
 
-    done();
+    return done();
   });
 })

@@ -1,15 +1,48 @@
 const tagTypeData = [
   {
-    name: 'Programming'
+    name: 'react'
   },
   {
-    name: 'Personal Finance'
+    name: 'redux'
   },
   {
-    name: 'Cooking'
+    name: 'express'
   },
   {
-    name: 'Music'
+    name: 'blockchain'
+  },
+  {
+    name: 'solidity'
+  },
+  {
+    name: 'heroku'
+  },
+  {
+    name: 'aws',
+  },
+  {
+    name: 'python'
+  },
+  {
+    name: 'javascript'
+  },
+  {
+    name: 'elasticSearch'
+  },
+  {
+    name: 'postgresql'
+  },
+  {
+    name: 'sequelize'
+  },
+  {
+    name: 'truffle'
+  },
+  {
+    name: 'web3'
+  },
+  {
+    name: 'flask'
   }
 ];
 

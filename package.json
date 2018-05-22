@@ -1,13 +1,12 @@
 {
   "name": "express-babel",
   "version": "1.0.0",
-  "description": "Using latest JavaScript features on the server",
+  "description": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vmasto/express-babel.git"
   },
-  "author": "Vassilis Mastorostergios <vmasto@gmail.com>",
-  "license": "MIT",
+  "author": "Kyle Shifflet, Frederick Peavy, William Cory",
   "main": "dist/server/index.js",
   "engines": {
     "node": "~8.9.4",
@@ -20,6 +19,7 @@
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest",
+    "resetdb": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "lint": "esw -w src test"
   },
   "keywords": [
