@@ -100,7 +100,7 @@ export default (sequelize, DataTypes) => {
     3: 3
   };
 
-  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId, bounty, tags}) => {
+  Post.createNewPost = async ({UserId, title, body, type, PostId, PostTypeId, bounty}) => {
     PostTypeId = PostTypeId || typeToId[type];
 
     await Post.create({
@@ -110,9 +110,6 @@ export default (sequelize, DataTypes) => {
       PostTypeId,
       PostId,
       bounty,
-      tags
-    }, {
-      include: [db.Tag]
     });
 
     if (PostId) {
