@@ -4,6 +4,7 @@ import user from './controller/user'
 import question from './controller/question'
 import answer from './controller/answer'
 import queryPostController from './controller/queryPost'
+import search from './controller/search'
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get('/post', queryPostController);
 
 router.get('/questions/all', question.get.questions.all);
 router.get('/questions', question.get.questions);
+router.get('/search', search.get.documents)
 // returns question and all answers
 router.get('/questions/:id', question.get.question); 
 router.post('/question', question.post.question);

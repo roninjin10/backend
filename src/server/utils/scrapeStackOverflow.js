@@ -2,7 +2,7 @@ import axios from 'axios'
 import fs from 'fs'
 import log from './logger'
 
-const eric = false;
+const eric = true;
 const kyle = false;
 
 log.info('starting scraper...');
