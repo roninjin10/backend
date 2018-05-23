@@ -1,5 +1,6 @@
 import axios from 'axios'
-import queryPost from '../../db/util/queryPost'
+import queryPost, { db } from '../../db/util/queryPost'
+import Promise from 'bluebird'
 
 let recomendations = [];
 
@@ -8,7 +9,9 @@ const getRecomendations = (req, res) => {
   let recs = recomendations[uid];
 
   if (recs) {
-    res.status(200).json(recs);
+    Promise.map(recs, (rec) => db.Post.findById(rec[0]))
+    .then((posts) => res.status(200).json(posts))
+    .catch((err) => res.status(400).json(err.message));
   } else {
     queryPost({limitBy: 10})
       .then((post) => res.status(200).json(post))
@@ -18,6 +21,12 @@ const getRecomendations = (req, res) => {
 
 const updateRecomendations = async () => {
   const newRecomendations = await axios.get('https://hrr30-enzyme-learning.herokuapp.com/')
+  if (Array.isArray(newRecomendations)) {
+    recomendations = newRecomendations;
+  }
 }
+
+const MINUTES = 10;
+setInterval(updateRecomendations, 1000 * 60 * MINUTES)
 
 export default getRecomendations

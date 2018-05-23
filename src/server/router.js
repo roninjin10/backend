@@ -43,7 +43,7 @@ router.get('/answers/:id', answer.get.answer);
 router.post('/answer', answer.post.answer);
 
 router.get('/analytics', analytics);
-router.get('/user/recomendation/:uid', getRecomendations)
+router.get('/user/recomendations/:uid', getRecomendations)
 
 export default router
 
