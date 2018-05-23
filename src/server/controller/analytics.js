@@ -21,7 +21,6 @@ const scorePost = (user, post) => {
 const analytics = async (req, res) => {
   const userData = await prepareAnalytics()
   const postData = await queryPost({limitBy: 'all', sortBy: '-createdAt'});
-  console.log(postData.length)
 
   let out = [];
 
