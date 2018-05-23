@@ -2,14 +2,13 @@ import axios from 'axios'
 import queryPost, { db } from '../../db/util/queryPost'
 import Promise from 'bluebird'
 
-let recomendations = [];
-
-const getRecomendations = (req, res) => {
+const getRecomendations = async (req, res) => {
   const uid = req.params.uid;
-  let recs = recomendations[uid];
+  
+  const user = await db.User.findById(uid)
 
-  if (recs) {
-    Promise.map(recs, (rec) => db.Post.findById(rec[0]))
+  if (user.recomendations) {
+    Promise.map(user.recomendations, (rec) => db.Post.findById(rec[0]))
     .then((posts) => res.status(200).json(posts))
     .catch((err) => res.status(400).json(err.message));
   } else {
@@ -21,8 +20,14 @@ const getRecomendations = (req, res) => {
 
 const updateRecomendations = async () => {
   const newRecomendations = await axios.get('https://hrr30-enzyme-learning.herokuapp.com/')
-  if (Array.isArray(newRecomendations)) {
-    recomendations = newRecomendations;
+  if (newRecomendations) {
+    Promise.map(
+      Object.keys(newRecomendations), 
+      user => Promise.map(
+        newRecomendations[user], 
+        (rec) => db.User.addRecomendations(rec[0], user)
+      )
+    )
   }
 }
 
