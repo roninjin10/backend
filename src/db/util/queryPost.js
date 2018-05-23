@@ -170,6 +170,7 @@ const parseIncludeParams = (queryParams) => {
     },
     db.Tag,
     db.Vote,
+    db.View,
   ];
 
   if (includeParams[0] in queryParams) {

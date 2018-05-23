@@ -162,6 +162,8 @@ export default (sequelize, DataTypes) => {
   Post.incFavorite = incField('favoriteCount');
   Post.decFavorite = decField('favoriteCount');
 
+  Post.incViewCount = incField('viewCount');
+
   Post.close = (id, isTopAnswer = false) => Post.update({
     closedDate: DataTypes.fn('NOW'),
     isTopAnswer

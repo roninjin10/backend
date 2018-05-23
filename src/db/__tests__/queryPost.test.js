@@ -2,7 +2,7 @@ import queryPost, { db } from '../util/queryPost'
 
 afterAll(async (done) => {
   await db.sequelize.close()
-  done()
+  return done()
 });
 
 describe('queryPost should allow the client to query data in a dynamic way', () => {
@@ -11,7 +11,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
     const query = await queryPost({});
 
     expect(query.length > 20).toBeTruthy();
-    done()
+    return done()
   });
 
   test('should be able to filter by id', async (done) => {
@@ -25,7 +25,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
       expect(post.id).toBe(1);
     }
 
-    done();
+    return done();
   });
 
   test('should return both question and it\'s corresponding answers', async (done) => {
@@ -47,7 +47,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
     expect(existsQuestion).toBeTruthy();
 
-    done();
+    return done();
   });
 
   test('should be able to filter by UserId', async (done) => {
@@ -62,7 +62,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
       expect (post.UserId).toBe(1);
     }
 
-    done();
+    return done();
   });
 
   test('should be able to filter by title', async (done) => {
@@ -73,7 +73,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
 
     expect(query.length > 1).toBeTruthy();
    
-    done();
+    return done();
   });
 
   test('should be able to filter by PostTypeId', async (done) => {
@@ -99,7 +99,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
       expect(post.PostTypeId).toBe(2);
     }
 
-    done();
+    return done();
   });
 
   test('should be able to filter by isTopAnswer', async (done) => {
@@ -114,7 +114,7 @@ describe('queryPost should allow the client to query data in a dynamic way', () 
       expect(post.isTopAnswer).toBeFalsy();
     }
 
-    done();
+    return done();
   });
 
 /*  TODO
@@ -155,7 +155,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.viewCount >= lastViewCount).toBeTruthy();
       lastViewCount = post.viewCount
     }
-    done();
+    return done();
   });
 
   test('should be able to sort by answerCount', async (done) => {
@@ -186,7 +186,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.answerCount >= lastViewCount).toBeTruthy();
       lastViewCount = post.answerCount
     }
-    done();
+    return done();
   });
 
   test('should be able to sort by favoriteCount', async (done) => {
@@ -217,7 +217,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.favoriteCount >= lastViewCount).toBeTruthy();
       lastViewCount = post.favoriteCount
     }
-    done();
+    return done();
   });
 
   test('should be able to sort by upvoteCount', async (done) => {
@@ -248,11 +248,10 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.upvoteCount >= lastViewCount).toBeTruthy();
       lastViewCount = post.upvoteCount
     }
-    done();
+    return done();
   });
 
   test('should be able to sort by createdAt', async (done) => {
-    debugger;
     const query = await queryPost({
       sortBy: '+createdAt',
       limitBy: 'all'
@@ -279,7 +278,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.createdAt <= lastViewCount).toBeTruthy();
       lastViewCount = post.createdAt
     }
-    done();
+    return done();
   });
 
 
@@ -311,7 +310,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.closedDate >= lastViewCount).toBeTruthy();
       lastViewCount = post.closedDate
     }
-    done();
+    return done();
   });
 
   test('should be able to sort by bounty', async (done) => {
@@ -327,7 +326,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       expect(post.bounty <= lastBounty).toBeTruthy();
       lastBounty = post.bounty;
     }
-    done();
+    return done();
   })
 
   test('should be be able to limit the number of posts returned', async (done) => {
@@ -337,7 +336,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
     
     expect(query.length).toBe(3);
 
-    done();
+    return done();
   });
 
   test('should limit by 50 by default', async (done) => {
@@ -346,7 +345,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
     expect(query.length).toBe(50);
 
-    done();
+    return done();
   })
 
   test('passing all into it should remove limit', async (done) => {
@@ -356,7 +355,7 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
 
     expect(query.length > 100).toBeTruthy();
 
-    done()
+    return done()
   })
 
   test('should be able to do a complicated multi parameter query', async (done) => {
@@ -376,8 +375,6 @@ test('should be able to sort by viewCount forwards and backwards', async (done) 
       lastViewCount = post.viewCount;
     }
 
-    done();
+    return done();
   });
-
-  
 });

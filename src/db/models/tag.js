@@ -18,5 +18,6 @@ export default (sequelize, DataTypes) => {
     Tag.belongsTo(models.User);
     Tag.belongsTo(models.TagType);
   }
+
   return Tag;
 }
