@@ -27,18 +27,14 @@ search.get.documents = (req, res) => {
 };
 
 search.get.suggestions = (req, res) => {
-  const query = esb
-  .completionSuggester('body-suggest', 'body')
-  .size(5)
-  .fuzzy(fuzzy = true)
-  .prefix(req.query)
+  const suggest = esb.completionSuggester('title-suggest', 'suggest').prefix(req.query.search);
 
   client.search({
-    index: 'posts',
-    body: query.toJSON()
+    index: 'title',
+    body: {'suggest': suggest.toJSON()}
   })
   .then(resp => {
-    const hits = resp.hits.hits;
+    const hits = resp.suggest;
     res.status(200).json({
       results: hits
     })
