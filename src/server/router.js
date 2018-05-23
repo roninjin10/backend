@@ -10,6 +10,8 @@ import upvotePost from './controller/upvotePost'
 import updateViews from './controller/updateViews'
 import addPublicAddress from './controller/addPublicAddress'
 import analytics from './controller/analytics'
+import getRecomendations from './controller/getRecomendations'
+
 
 const router = Router();
 
@@ -41,6 +43,7 @@ router.get('/answers/:id', answer.get.answer);
 router.post('/answer', answer.post.answer);
 
 router.get('/analytics', analytics);
+router.get('/user/recomendation/:uid', getRecomendations)
 
 export default router
 
