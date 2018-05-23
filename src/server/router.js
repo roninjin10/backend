@@ -7,6 +7,7 @@ import queryPostController from './controller/queryPost'
 import search from './controller/search'
 import closePost from './controller/closePost'
 import upvotePost from './controller/upvotePost'
+import downvotePost from './controller/downvotePost'
 import updateViews from './controller/updateViews'
 import addPublicAddress from './controller/addPublicAddress'
 import analytics from './controller/analytics'
@@ -28,13 +29,14 @@ router.patch('/user/address', addPublicAddress);
 router.get('/post', queryPostController);
 router.patch('/post/close', closePost);
 router.patch('/post/upvotes', upvotePost);
+router.patch('/post/downvotes', downvotePost);
 router.patch('/post/views', updateViews);
 
 router.get('/questions/all', question.get.questions.all);
 router.get('/questions', question.get.questions);
 router.get('/search', search.get.documents)
 // returns question and all answers
-router.get('/questions/:id', question.get.question); 
+router.get('/questions/:id', question.get.question);
 router.post('/question', question.post.question);
 
 router.get('/answers/all', answer.get.answers.all);
