@@ -1,16 +1,17 @@
 import db from '../../db/models';
 
 const Post = db.Post;
-const View = db.View;
+const Vote = db.Vote;
 
-const updateViews = async (req, res) => {
+const downvote = async (req, res) => {
   try {
     const transaction = await db.sequelize.transaction(
       async () => {
-        await Post.incViewCount(req.body.id);
-        await View.create({
+        await Post.decVote(req.body.id);
+        await Vote.create({
           PostId: req.body.id,
           UserId: req.body.UserId,
+          VoteTypeId: 1,
         })
       }
     );
@@ -20,4 +21,4 @@ const updateViews = async (req, res) => {
   }
 }
 
-export default updateViews;
+export default downvote;
