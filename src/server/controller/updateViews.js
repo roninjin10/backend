@@ -7,7 +7,7 @@ const updateViews = async (req, res) => {
   try {
     const transaction = await db.sequelize.transaction(
       async () => {
-        await Post.incViewCount(req.body.id);
+        await Post.incView(req.body.id);
         await View.create({
           PostId: req.body.id,
           UserId: req.body.UserId,
