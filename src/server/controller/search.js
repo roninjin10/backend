@@ -26,6 +26,28 @@ search.get.documents = (req, res) => {
     });
 };
 
+search.get.suggestions = (req, res) => {
+  const query = esb
+  .completionSuggester('body-suggest', 'body')
+  .size(5)
+  .fuzzy(fuzzy = true)
+  .prefix(req.query)
+
+  client.search({
+    index: 'posts',
+    body: query.toJSON()
+  })
+  .then(resp => {
+    const hits = resp.hits.hits;
+    res.status(200).json({
+      results: hits
+    })
+  })
+  .catch(err => {
+    res.status(404).json(err)
+  });
+}
+
 export default search;
 
 // client.search({

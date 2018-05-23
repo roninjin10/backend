@@ -34,7 +34,8 @@ router.patch('/post/views', updateViews);
 
 router.get('/questions/all', question.get.questions.all);
 router.get('/questions', question.get.questions);
-router.get('/search', search.get.documents)
+router.get('/search/docs', search.get.documents)
+router.get('/search/suggest', search.get.suggestions)
 // returns question and all answers
 router.get('/questions/:id', question.get.question);
 router.post('/question', question.post.question);
