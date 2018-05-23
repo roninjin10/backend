@@ -64,12 +64,13 @@ controller.post.signin = (req, res) => {
       return res.json(user);
     })
   })(req, res);
-
-  controller.get.all = (req, res) => {
-    User.getAllUsers()
-    .then((allUsers) => res.status(200).json(allUsers))
-    .catch((err) => res.status(400).json(err));
-  }
 }
+
+controller.get.all = (req, res) => {
+  User.getAllUsers()
+  .then((allUsers) => res.status(200).json(allUsers))
+  .catch((err) => res.status(400).json(err));
+}
+
 
 export default controller
