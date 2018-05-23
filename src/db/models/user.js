@@ -21,6 +21,10 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
+    recomendations: {
+      allowNull: true,
+      type: DataTypes.TEXT
+    },
     publicAddress: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -96,6 +100,13 @@ export default (sequelize, DataTypes) => {
       {where: {id}},
     )
   }
+
+  User.addRecomendations = (id, recomendations) => {
+    return User.update(
+      {recomendations},
+      {where: {id}},
+    );
+  };
   
   return User;
 };
