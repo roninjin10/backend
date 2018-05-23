@@ -35,9 +35,9 @@ export const newPost  = (/*postType*/) => (req, res) => {
   const { UserId, title, body, PostTypeId, PostId, tags = [] } = req.body;
 
   return createPost({UserId, title, body, PostTypeId, PostId}, tags)
-  .then((post) => res.status(201).send({
+  .then((post) => res.status(201).json({
     message: 'post successful',
-    post,
+    post: post.dataValues,
   }))
   .catch((err) => res.status(401).json({
       message: 'there was an error posting question',
