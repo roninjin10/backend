@@ -38,7 +38,6 @@ const createPostWithTags = async ({UserId, title, body, type, PostId, PostTypeId
       }
 
       const tagEntries = await Promise.reduce(tags, async (all, tag) => {
-        debugger;
         const tagEntry = await Tag.create({
           PostId: post.id,
           UserId,
@@ -46,7 +45,6 @@ const createPostWithTags = async ({UserId, title, body, type, PostId, PostTypeId
         });
         return [...all, tagEntry];
       }, []);
-      debugger;
       return {...post, tags: tagEntries};
     }
   );

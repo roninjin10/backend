@@ -21,6 +21,10 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
+    publicAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -86,5 +90,12 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   })
 
+  User.addPublicAddress = (id, address) => {
+    return User.update(
+      {address},
+      {where: {id}},
+    )
+  }
+  
   return User;
 };
