@@ -1,7 +1,10 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
+import Promise from 'bluebird'
+
+Promise.promisifyAll(bcrypt);
 
 export default (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
+  const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -18,28 +21,81 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
+    publicAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: {
-          args: [8, 2000],
-          msg: 'Please enter a password with at least 8 characters'
+          args: [3, 2000],
+          msg: 'Please enter a password with at least 3 characters'
         }
       }
-    },
+    }
   }, {
-    /*
-     *  this hook is making sure we encrypt the password before storing in database
-     */
     hooks: {
       afterValidate: (user) => {
         user.password = bcrypt.hashSync(user.password, 8);
       }
     }
   });
+  
   User.associate = function(models) {
     User.hasMany(models.Post);
+    User.hasMany(models.Vote);
+    User.hasMany(models.View);
+    User.hasMany(models.Tag);
   };
+  
+  User.createUser = (newUser) => User.create(newUser);
+
+  User.destroyUser = (username) => User.destroy({
+    where: {username}
+  });
+
+  User.getUser = (username) => User.findOne({
+    where: {username}
+  })
+
+  User.verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
+  
+
+  User.verifyLogin = async (username, password) => {
+    
+    let user = await User.getUser(username);
+    
+    if (!user) {
+      throw new Error('username does not exist');
+    }
+
+    const isMatch = await User.verifyPassword(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('password is incorrect');
+    }
+    
+    delete user.password;
+    return user;
+  }
+
+  User.queryUsers = (query) => User.findAll({
+    where: query,
+    include: [{all: true}]
+  });
+
+  User.getAllPosts = () => User.findAll({
+    include: [{all: true}]
+  })
+
+  User.addPublicAddress = (id, address) => {
+    return User.update(
+      {address},
+      {where: {id}},
+    )
+  }
+  
   return User;
 };

@@ -1,6 +1,11 @@
 # https://github.com/github/gitignore/blob/master/Node.gitignore #
 ##################################################################
 
+src/server/utils/fakeStackOverflowData
+
+
+src/search/config/
+
 # Logs
 logs
 *.log
@@ -63,3 +68,5 @@ typings/
 # Custom
 .idea
 dist
+
+#

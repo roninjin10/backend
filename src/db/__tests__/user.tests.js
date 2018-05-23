@@ -1,37 +1,39 @@
-import { createUser, fetchUser, verifyPassword, verifyLogin } from '../util/user'
 import db from '../models'
 
 const User = db.User;
+const { createUser, getUser, verifyPassword, verifyLogin, destroyUser } = User 
 
-const clearDatabase = (done) => {
-  User.destroy({
-    where: {},
-    truncate: true,
-    cascade: true,
-  })
-  .finally(done);
-}
-
-afterAll(() => db.sequelize.close());
+  
+afterAll(async (done) => {
+  await db.sequelize.close();
+  done();
+});
 
 describe('Test createUser', () => {
-  beforeEach(clearDatabase);
 
   test('Should create a new item in the database with valid input', (done) => {
     const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
-
+    destroyUser(username)
+    .then(() => 
     createUser({
        username,
        email,
        password
-    })
+    }))
     .then(() => User.findOne({
       where: {username}
     }))
-    .then((user) => expect(user.email).toBe('test@gmail.com'))
-    .finally(done);
+    .then((user) => {
+      expect(user.email).toBe('test@gmail.com')
+      done();
+    })
+    .catch(() => {
+      expect(false).toBeTruthy()
+      done();
+    })
+    
   })
 
   test('Should not create a user if email is not valid', (done) => {
@@ -45,10 +47,13 @@ describe('Test createUser', () => {
       password
     })
     .then(() => {
-      throw new Error('should not have created user')
+      expect(false).toBeTruthy;
+      done()
     })
-    .catch((err) => expect(err).toBeTruthy)
-    .finally(done);
+    .catch((err) => {
+      expect(err).toBeTruthy
+      done();
+    })
   })
 
   test('Usernames should be unique', (done) => {
@@ -61,49 +66,59 @@ describe('Test createUser', () => {
     createUser(newUser)
       .then(() => createUser(newUser))
       .then(() => {
-        throw new Error('usernames are not unique');
+        expect(false).toBeTruthY();
+        done()
       })
-      .catch((err) => expect(err).toBeTruthy)
-      .finally(done);
+      .catch(() => {
+        expect(true).toBeTruthy
+        done()
+      })
   })
 
   test('Passwords should be hashed', (done) => {
     const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
-
+    destroyUser(username).then(() =>
     createUser({
        username,
        email,
        password
-    })
+    }))
     .then(() => User.findOne({
       where: {username}
     }))
     .then((user) => expect(user.password === '123456789').toBe(false))
-    .finally(done);
+    .then(done)
+    .catch(() => {
+      expect(false).toBeTruthy
+      done()
+    });
   })
 })
 
-describe('Test fetchUser', () => {
-  beforeEach(clearDatabase);
+describe('Test getUser', () => {
 
   test('Should get user from database', (done) => {
     const username = 'TEST_USER';
     const email = 'test@gmail.com';
     const password = '123456789';
-
+    destroyUser(username);
     User.create({
       username,
       email,
       password
     })
-    .then(() => fetchUser(username))
-    .then((user) => expect(user.email).toBe(email))
-    .catch((err) => {
-      throw new Error(err)
+    .then(() => getUser(username))
+    .then((user) => {
+      expect(user.email).toBe(email)
+      done()
     })
-    .finally(done);
+    .catch((err) => {
+      console.log('\n\nerr\n\n', err);
+      expect(false).toBeTruthy()
+      done()
+    })
   })
 });
 
@@ -113,33 +128,27 @@ describe('Test verifyPassword', () => {
   const email = 'test2@gmail.com';
   const password = '1234567890';
   
-  function beforeVerifyTest(done) {
-    User.create({
-      username,
-      email,
-      password
+  beforeAll((done) => {
+    destroyUser(username).then(() => {
+      createUser({username, email, password})
+      done();
     })
-    .catch((err) => {
-      throw new Error(err);
-    })
-    .finally(done)
-  }
-  
-  beforeAll(beforeVerifyTest);
-  afterAll(clearDatabase);
+  })
 
   test('correct password should return a truthy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword(password, user.password))
     .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .finally(() => done());
   });
 
   test('incorrect password should return a falsy value', (done) => {
-    fetchUser(username)
+    getUser(username)
     .then((user) => verifyPassword('wrong password', user.password))
-    .catch(() => expect(false).toBeTruthy)
-    .finally(done);
+    .catch(() => {
+      expect(false).toBeTruthy
+    })
+    .finally(() => done());
   });
 });
 
@@ -148,29 +157,21 @@ describe('Test VerifyLogin', () => {
   const email = 'test2@gmail.com';
   const password = '1234567890';
   
-  function beforeVerifyTest(done) {
-    User.create({
-      username,
-      email,
-      password
+  beforeAll((done) => {
+    destroyUser(username).then(() => {
+      createUser({username, email, password})
+      done();
     })
-    .catch((err) => {
-      throw new Error(err);
-    })
-    .finally(done)
-  }
-  
-  beforeAll(beforeVerifyTest);
-  afterAll(clearDatabase);
+  })
 
-  test('correct login info should return the user', (done) => {
+  test('correct signin info should return the user', (done) => {
     verifyLogin(username, password)
     .then(user => {
       expect(user.username).toBe(username);
       expect(user.email).toBe(email);
       done();
     })
-    .catch((err) => {
+    .catch(() => {
       expect(false).toBeTruthy;
       done();
     })
@@ -201,3 +202,4 @@ describe('Test VerifyLogin', () => {
     })
   })
 })
+
