@@ -10,10 +10,11 @@ let controller = {
 };
 
 controller.get.checkSignin = (req, res) => {
+  console.log('req.user', req.user)
   if (req.user) {
     res.status(200).json('user signed in');
   } else {
-    res.status(404).json('user not signed in');
+    res.status(404).json(req.user);
   }
 }
 

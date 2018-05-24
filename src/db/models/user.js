@@ -42,7 +42,9 @@ export default (sequelize, DataTypes) => {
   }, {
     hooks: {
       afterValidate: (user) => {
-        user.password = bcrypt.hashSync(user.password, 8);
+        if (user.password) {
+          user.password = bcrypt.hashSync(user.password, 8);
+        }
       }
     }
   });
@@ -94,9 +96,9 @@ export default (sequelize, DataTypes) => {
     include: [{all: true}]
   })
 
-  User.addPublicAddress = (id, address) => {
+  User.addPublicAddress = (id, publicAddress) => {
     return User.update(
-      {address},
+      {publicAddress},
       {where: {id}},
     )
   }
