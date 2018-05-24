@@ -26,6 +26,24 @@ search.get.documents = (req, res) => {
     });
 };
 
+search.get.suggestions = (req, res) => {
+  const suggest = esb.completionSuggester('title-suggest', 'suggest').prefix(req.query.search);
+
+  client.search({
+    index: 'title',
+    body: {'suggest': suggest.toJSON()}
+  })
+  .then(resp => {
+    const hits = resp.suggest;
+    res.status(200).json({
+      results: hits
+    })
+  })
+  .catch(err => {
+    res.status(404).json(err)
+  });
+}
+
 export default search;
 
 // client.search({
