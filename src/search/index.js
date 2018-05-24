@@ -2,7 +2,7 @@ import elasticsearch from 'elasticsearch'
 import domain from './config/config'
 
 const client = new elasticsearch.Client({
-  host: 'domain',
+  host: domain,
   log: 'trace'
 });
 
