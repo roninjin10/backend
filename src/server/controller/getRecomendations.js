@@ -6,7 +6,7 @@ const getRecomendations = async (req, res) => {
   const uid = req.params.uid;
   
   const user = await db.User.findById(uid)
-
+  console.log(user.recomendations)
   if (user.recomendations) {
     Promise.map(user.recomendations, (rec) => db.Post.findById(rec[0]))
     .then((posts) => res.status(200).json(posts))
@@ -18,20 +18,6 @@ const getRecomendations = async (req, res) => {
   }
 }
 
-const updateRecomendations = async () => {
-  const newRecomendations = await axios.get('https://hrr30-enzyme-learning.herokuapp.com/')
-  if (newRecomendations) {
-    Promise.map(
-      Object.keys(newRecomendations), 
-      user => Promise.map(
-        newRecomendations[user], 
-        (rec) => db.User.addRecomendations(rec[0], user)
-      )
-    )
-  }
-}
 
-const MINUTES = 10;
-setInterval(updateRecomendations, 1000 * 60 * MINUTES)
 
 export default getRecomendations
