@@ -5635,6 +5635,7 @@ var postData = [
 ];
 
 postData = postData.map(post => {
+  delete post.id;
   if (post.comments !== undefined) {
     post.commentCount = post.comments;
     delete post.comments;
