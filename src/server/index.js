@@ -3,10 +3,10 @@ import log from './utils/logger'
 
 import updateRecomendations from './utils/updateRecomendations'
 
-const MINUTES = 30;
+const MINUTES = 30
 setInterval(updateRecomendations, 1000 * 60 * MINUTES)
-updateRecomendations();
+updateRecomendations()
 
-const { PORT = 8080 } = process.env;
+const { PORT = 8080 } = process.env
 
-app.listen(PORT, () => log.info(`Listening on port ${PORT}`));
+app.listen(PORT, () => log.info(`Listening on port ${PORT}`))

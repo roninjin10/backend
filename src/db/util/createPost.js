@@ -1,9 +1,9 @@
 import db from '../models'
 import Promise from 'bluebird'
 
-const Post = db.Post;
-const Tag = db.Tag;
-const TagType = db.TagType;
+const Post = db.Post
+const Tag = db.Tag
+const TagType = db.TagType
 
 const typeToId = {
   Question: 1,
@@ -12,7 +12,7 @@ const typeToId = {
   1: 1,
   2: 2,
   3: 3
-};
+}
 
 const tagToId = {
   'react': 1,
@@ -31,10 +31,10 @@ const createPostWithTags = async ({UserId, title, body, type, PostId, PostTypeId
         PostTypeId,
         PostId,
         bounty,
-      });
-      
+      })
+
       if (PostId) {
-        await Post.incComment(PostId);
+        await Post.incComment(PostId)
       }
 
       const tagEntries = await Promise.reduce(tags, async (all, tag) => {
@@ -42,10 +42,10 @@ const createPostWithTags = async ({UserId, title, body, type, PostId, PostTypeId
           PostId: post.id,
           UserId,
           TagTypeId: tagToId[tag],
-        });
-        return [...all, tagEntry];
-      }, []);
-      return {...post, tags: tagEntries};
+        })
+        return [...all, tagEntry]
+      }, [])
+      return {...post, tags: tagEntries}
     }
   );
 }

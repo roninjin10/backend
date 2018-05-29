@@ -1,7 +1,7 @@
-import db from '../../db/models';
+import db from '../../db/models'
 
-const Post = db.Post;
-const View = db.View;
+const Post = db.Post
+const View = db.View
 
 const updateViews = async (req, res) => {
   try {
@@ -13,11 +13,11 @@ const updateViews = async (req, res) => {
           UserId: req.body.UserId,
         })
       }
-    );
+    )
     return res.status(200).json(transaction)
   } catch(err) {
-    res.status(400).json(err);
+    res.status(400).json(err)
   }
 }
 
-export default updateViews;
+export default updateViews

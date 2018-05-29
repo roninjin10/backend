@@ -4,12 +4,12 @@ import { config as configEnv } from 'dotenv'
 import applyMiddleware from './middleware'
 import router from './router'
 
-configEnv();
+configEnv()
 
-const app = express();
+const app = express()
 
-applyMiddleware(app);
+applyMiddleware(app)
 
-app.use(router);
+app.use(router)
 
-export default app;
+export default app

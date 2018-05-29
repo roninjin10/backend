@@ -10,4 +10,4 @@ export default morgan((tokens, req, res) => [
   '-',
   tokens['response-time'](req,res),
   'ms'].join(' ')
-);
+)

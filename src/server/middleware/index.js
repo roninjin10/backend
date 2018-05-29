@@ -8,15 +8,15 @@ import cors from 'cors'
 
 const applyMiddleware = (app) => {
   app.use(cors())
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended: false}));
-  app.use(morgan);
-  app.use(cookieParser());
-  app.use(session);
-  app.use(localPassport.initialize());
-  app.use(localPassport.session());
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extended: false}))
+  app.use(morgan)
+  app.use(cookieParser())
+  app.use(session)
+  app.use(localPassport.initialize())
+  app.use(localPassport.session())
 
-  return app;
-};
+  return app
+}
 
-export default applyMiddleware;
+export default applyMiddleware

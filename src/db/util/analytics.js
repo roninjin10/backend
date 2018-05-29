@@ -1,6 +1,6 @@
 import db from '../models'
 
-const { Post, Tag, User, View, Vote } = db;
+const { Post, Tag, User, View, Vote } = db
 
 const prepareAnalytics = () => {
   return User.findAll({
@@ -20,7 +20,7 @@ const prepareAnalytics = () => {
         model: Vote,
       }
     ]
-  });
-};
+  })
+}
 
 export default prepareAnalytics

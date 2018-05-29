@@ -1,25 +1,25 @@
 import Promise from 'bluebird'
 
-import db from '../../db/models';
+import db from '../../db/models'
 import queryPost from '../../db/util/queryPost'
 
-const Post = db.Post;
+const Post = db.Post
 
 const closePost = async (req, res) => {
-  const posts = await queryPost({PostId: req.body.PostId});
-  let topAnswer;
+  const posts = await queryPost({PostId: req.body.PostId})
+  let topAnswer
   for (const post of posts) {
     if (!topAnswer || post.upvoteCount > topAnswer) {
-      topAnswer = post.upvoteCount;
-      post.isTopAnswer = true;
+      topAnswer = post.upvoteCount
+      post.isTopAnswer = true
     }
   }
   try {
-    let posts = await Promise.map(posts, (post) => Post.close(post.id, post.isTopAnswer));
-    res.status(200).json(posts);
+    let posts = await Promise.map(posts, (post) => Post.close(post.id, post.isTopAnswer))
+    res.status(200).json(posts)
   } catch(err) {
-    return res.status(400).json(err);
+    return res.status(400).json(err)
   }
 }
 
-export default closePost;
+export default closePost

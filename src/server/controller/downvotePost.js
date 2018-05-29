@@ -1,13 +1,13 @@
-import db from '../../db/models';
+import db from '../../db/models'
 
-const Post = db.Post;
-const Vote = db.Vote;
+const Post = db.Post
+const Vote = db.Vote
 
 const downvote = async (req, res) => {
   try {
     const transaction = await db.sequelize.transaction(
       async () => {
-        await Post.decVote(req.body.id);
+        await Post.decVote(req.body.id)
         await Vote.create({
           PostId: req.body.id,
           UserId: req.body.UserId,
@@ -17,8 +17,8 @@ const downvote = async (req, res) => {
     );
     return res.status(200).json(transaction)
   } catch(err) {
-    res.status(400).json(err);
+    res.status(400).json(err)
   }
 }
 
-export default downvote;
+export default downvote
