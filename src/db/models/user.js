@@ -48,31 +48,30 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
-  
+
   User.associate = function(models) {
     User.hasMany(models.Post);
     User.hasMany(models.Vote);
     User.hasMany(models.View);
     User.hasMany(models.Tag);
   };
-  
+
   User.createUser = (newUser) => User.create(newUser);
 
   User.destroyUser = (username) => User.destroy({
     where: {username}
-  });
+  })
 
   User.getUser = (username) => User.findOne({
     where: {username}
   })
 
   User.verifyPassword = (password, hashedPassword) => bcrypt.compareAsync(password, hashedPassword)
-  
 
   User.verifyLogin = async (username, password) => {
-    
+
     let user = await User.getUser(username);
-    
+
     if (!user) {
       throw new Error('username does not exist');
     }
@@ -82,7 +81,7 @@ export default (sequelize, DataTypes) => {
     if (!isMatch) {
       throw new Error('password is incorrect');
     }
-    
+
     delete user.password;
     return user;
   }
@@ -109,6 +108,6 @@ export default (sequelize, DataTypes) => {
       {where: {id}},
     );
   };
-  
+
   return User;
 };

@@ -1,6 +1,7 @@
 import db from '../../db/models'
 import passport from '../middleware/localPassport'
 import log from '../utils/logger'
+import jwt from 'jsonwebtoken'
 
 const User = db.User
 
@@ -60,8 +61,12 @@ controller.post.signin = (req, res) => {
       if (err) {
         log.info('there was an error logging in user', err)
         return res.status(400).send('unable to log in user')
+      } else {
+        const token = jwt.sign({
+          user
+        }, 'somesecretkey')
+        return res.json({token})
       }
-      return res.json(user)
     })
   })(req, res)
 }
