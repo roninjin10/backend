@@ -32,9 +32,9 @@ export const postById = (postType) => (req, res) =>
   .catch((err) => res.status(404).json(err))
 
 export const newPost  = (/*postType*/) => (req, res) => {
-  const { UserId, title, body, PostTypeId, PostId, tags = [] } = req.body
+  const { UserId, title, body, PostTypeId, PostId, bounty, tags = [] } = req.body
 
-  return createPost({UserId, title, body, PostTypeId, PostId}, tags)
+  return createPost({UserId, title, body, PostTypeId, PostId, bounty}, tags)
   .then((post) => res.status(201).json({
     message: 'post successful',
     post: post.dataValues,
